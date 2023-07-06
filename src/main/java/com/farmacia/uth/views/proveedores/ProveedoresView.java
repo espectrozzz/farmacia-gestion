@@ -46,8 +46,8 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
     private TextField usuario;
     private DatePicker creado;
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
+    private final Button cancel = new Button("Cancelar");
+    private final Button save = new Button("Guardar");
 
     private final BeanValidationBinder<Proveedor> binder;
 
