@@ -40,8 +40,8 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
     private TextField direccion;
     private TextField telefono;
 
-    private final Button cancel = new Button("Cancel");
-    private final Button save = new Button("Save");
+    private final Button cancel = new Button("Cancelar");
+    private final Button save = new Button("Guardar");
 
     private final BeanValidationBinder<Farmacia> binder;
 
