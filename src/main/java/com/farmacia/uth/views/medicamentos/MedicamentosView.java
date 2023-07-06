@@ -18,7 +18,6 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.EmailField;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
@@ -37,8 +36,6 @@ public class MedicamentosView extends Div {
     private Button cancel = new Button("Cancel");
     private Button save = new Button("Save");
 
-    private Binder<SamplePerson> binder = new Binder<>(SamplePerson.class);
-
     public MedicamentosView(SamplePersonService personService) {
         addClassName("medicamentos-view");
 
@@ -46,19 +43,15 @@ public class MedicamentosView extends Div {
         add(createFormLayout());
         add(createButtonLayout());
 
-        binder.bindInstanceFields(this);
         clearForm();
 
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
-            personService.update(binder.getBean());
-            Notification.show(binder.getBean().getClass().getSimpleName() + " details stored.");
             clearForm();
         });
     }
 
     private void clearForm() {
-        binder.setBean(new SamplePerson());
     }
 
     private Component createTitle() {

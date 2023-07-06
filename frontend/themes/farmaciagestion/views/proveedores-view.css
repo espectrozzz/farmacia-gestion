@@ -42,3 +42,11 @@
 .proveedores-view .grid-wrapper {
   width: 100%;
 }
+
+.text-center{
+	font-size: 23px;
+	text-align: center;
+}
+.text-preffix{
+	font-size: 15px;
+}

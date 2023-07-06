@@ -20,8 +20,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -30,6 +28,7 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoIcon;
 
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
@@ -53,8 +52,6 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
-
-    private final BeanValidationBinder<Proveedor> binder;
 
     private Proveedor proveedor;
 
@@ -95,11 +92,9 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(Proveedor.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
-        binder.bindInstanceFields(this);
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -111,7 +106,6 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
                 if (this.proveedor == null) {
                     this.proveedor = new Proveedor();
                 }
-                binder.writeBean(this.proveedor);
                 proveedorService.update(this.proveedor);
                 clearForm();
                 refreshGrid();
@@ -122,8 +116,6 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            } catch (ValidationException validationException) {
-                Notification.show("Failed to update the data. Check again that all values are valid");
             }
         });
     }
@@ -155,13 +147,15 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        nombre = new TextField("Nombre"); nombre.setPrefixComponent(LumoIcon.USER.create()); nombre.setPlaceholder("Juan del Rio"); nombre.setHelperText("Ingrese el nombre del Proveedor");
+        H3 headerForm = new H3("Información del Proveedor"); headerForm.addClassName("text-center");
+        nombre = new TextField("Nombre"); nombre.setPrefixComponent(LumoIcon.USER.create()); nombre.setPlaceholder("Juan del Rio");
         direccion = new TextArea("Direccion"); direccion.setPrefixComponent(VaadinIcon.WORKPLACE.create());
-        telefono = new TextField("Telefono");
-        correo = new TextField("Correo");
-        usuario = new TextField("Usuario");
-        creado = new DatePicker("Creado");
-        formLayout.add(nombre, direccion, telefono, correo, usuario, creado);
+        H3 prefijo = new H3("+504"); prefijo.addClassName("text-preffix");
+        telefono = new TextField("Telefono"); telefono.setPrefixComponent(prefijo); telefono.setPlaceholder("9598-4316"); telefono.setSuffixComponent(VaadinIcon.PHONE.create());
+        correo = new TextField("Correo"); correo.setPrefixComponent(VaadinIcon.USER_CARD.create()); correo.setPlaceholder("example@gmail.com");
+        usuario = new TextField("Usuario"); usuario.setPrefixComponent(VaadinIcon.USERS.create());
+        creado = new DatePicker("Fecha de Creacion"); creado.setValue(LocalDate.now()); creado.setReadOnly(true);
+        formLayout.add(headerForm, nombre, direccion, telefono, correo, usuario, creado);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -196,7 +190,5 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
 
     private void populateForm(Proveedor value) {
         this.proveedor = value;
-        binder.readBean(this.proveedor);
-
     }
 }
