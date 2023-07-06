@@ -1,7 +1,6 @@
 package com.farmacia.uth.views.proveedores;
 
 import com.farmacia.uth.data.entity.Proveedor;
-import com.farmacia.uth.data.service.ProveedorService;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -55,10 +54,8 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
 
     private Proveedor proveedor;
 
-    private final ProveedorService proveedorService;
 
-    public ProveedoresView(ProveedorService proveedorService) {
-        this.proveedorService = proveedorService;
+    public ProveedoresView() {
         addClassNames("proveedores-view");
 
         // Create UI
@@ -76,15 +73,12 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
         grid.addColumn("correo").setAutoWidth(true);
         grid.addColumn("usuario").setAutoWidth(true);
         grid.addColumn("creado").setAutoWidth(true);
-        grid.setItems(query -> proveedorService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
-                .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(PROVEEDOR_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+               // UI.getCurrent().navigate(String.format(PROVEEDOR_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
             } else {
                 clearForm();
                 UI.getCurrent().navigate(ProveedoresView.class);
@@ -106,7 +100,6 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
                 if (this.proveedor == null) {
                     this.proveedor = new Proveedor();
                 }
-                proveedorService.update(this.proveedor);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -124,17 +117,6 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> proveedorId = event.getRouteParameters().get(PROVEEDOR_ID).map(Long::parseLong);
         if (proveedorId.isPresent()) {
-            Optional<Proveedor> proveedorFromBackend = proveedorService.get(proveedorId.get());
-            if (proveedorFromBackend.isPresent()) {
-                populateForm(proveedorFromBackend.get());
-            } else {
-                Notification.show(String.format("The requested proveedor was not found, ID = %s", proveedorId.get()),
-                        3000, Notification.Position.BOTTOM_START);
-                // when a row is selected but the data is no longer available,
-                // refresh grid
-                refreshGrid();
-                event.forwardTo(ProveedoresView.class);
-            }
         }
     }
 

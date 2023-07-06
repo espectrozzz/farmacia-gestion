@@ -1,7 +1,6 @@
 package com.farmacia.uth.views.movimientos;
 
 import com.farmacia.uth.data.entity.SamplePerson;
-import com.farmacia.uth.data.service.SamplePersonService;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -43,10 +42,8 @@ public class MovimientosView extends Div {
     private Grid<SamplePerson> grid;
 
     private Filters filters;
-    private final SamplePersonService samplePersonService;
 
-    public MovimientosView(SamplePersonService SamplePersonService) {
-        this.samplePersonService = SamplePersonService;
+    public MovimientosView() {
         setSizeFull();
         addClassNames("movimientos-view");
 
@@ -231,10 +228,6 @@ public class MovimientosView extends Div {
         grid.addColumn("dateOfBirth").setAutoWidth(true);
         grid.addColumn("occupation").setAutoWidth(true);
         grid.addColumn("role").setAutoWidth(true);
-
-        grid.setItems(query -> samplePersonService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)),
-                filters).stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
 
