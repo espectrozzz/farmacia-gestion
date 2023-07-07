@@ -17,13 +17,13 @@ import com.vaadin.flow.router.Route;
 import java.util.Arrays;
 import java.util.List;
 
-@PageTitle("Productos")
-@Route(value = "productos", layout = MainLayout.class)
-public class ProductosView extends Div implements AfterNavigationObserver {
+@PageTitle("Inventario")
+@Route(value = "inventario", layout = MainLayout.class)
+public class InventarioView extends Div implements AfterNavigationObserver {
 
     Grid<Person> grid = new Grid<>();
 
-    public ProductosView() {
+    public InventarioView() {
         addClassName("productos-view");
         setSizeFull();
         grid.setHeight("100%");

@@ -11,15 +11,8 @@ import org.springframework.boot.autoconfigure.sql.init.SqlDataSourceScriptDataba
 import org.springframework.boot.autoconfigure.sql.init.SqlInitializationProperties;
 import org.springframework.context.annotation.Bean;
 
-/**
- * The entry point of the Spring Boot application.
- *
- * Use the @PWA annotation make the application installable on phones, tablets
- * and some desktop browsers.
- *
- */
 @SpringBootApplication
-@NpmPackage(value = "@fontsource/roboto", version = "4.5.0")
+@NpmPackage(value = "@fontsource/open-sans", version = "4.5.0")
 @Theme(value = "farmaciagestion", variant = Lumo.DARK)
 public class Application implements AppShellConfigurator {
 

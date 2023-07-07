@@ -24,6 +24,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -41,7 +42,7 @@ public class MedicamentosView extends Div {
 	Grid<Medicamento> gridData = new Grid<>(Medicamento.class, false);
 	
     private TextField nombre = new TextField("Medicamento");
-    private TextField descripcion = new TextField("Descripcion");
+    private TextArea descripcion = new TextArea("Descripcion");
     private ComboBox<Proveedor> proveedor = new ComboBox<>("Proveedor");
     private DatePicker fechaRegistro = new DatePicker("Fecha de Registro");
     private DatePicker fechaVencimiento = new DatePicker("Fecha de Caducidad");
@@ -95,8 +96,7 @@ public class MedicamentosView extends Div {
     	FormLayout formLayout = new FormLayout(); formLayout.addClassName("form-layout");
     	nombre.setPrefixComponent(LineAwesomeIcon.TABLETS_SOLID.create());
     	descripcion.setPrefixComponent(LineAwesomeIcon.INFO_SOLID.create());
-    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());
-    	proveedor.setItems(setProv()); proveedor.setItemLabelGenerator(Proveedor::getNombre);
+    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(setProv()); proveedor.setItemLabelGenerator(Proveedor::getNombre); 
     	fechaRegistro.setValue(LocalDate.now()); fechaRegistro.setReadOnly(true); fechaVencimiento.setPrefixComponent(LineAwesomeIcon.HOURGLASS_END_SOLID.create());
     	fechaVencimiento.setHelperText("Selecciones o sngrese la fecha de vencimiento"); 
         formLayout.add(nombre, descripcion, proveedor,fechaRegistro, fechaVencimiento);

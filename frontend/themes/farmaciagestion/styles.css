@@ -4,12 +4,11 @@
 @import url('./views/farmacias-view.css');
 @import url('./views/productos-view.css');
 @import url('./views/movimientos-view.css');
-@import url('@fontsource/roboto/index.css');    html {
+@import url('@fontsource/open-sans/index.css');    html {
       --lumo-border-radius-s: 1px;
       --lumo-border-radius-m: 2px;
       --lumo-border-radius-l: 4px;
---lumo-font-family: "Open Sans", Arial, sans-serif;
-
+--lumo-font-family: "Open Sans", sans-serif;
     }
 
     [theme~="dark"] {

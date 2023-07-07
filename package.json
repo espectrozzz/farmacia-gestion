@@ -3,7 +3,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "dependencies": {
-    "@fontsource/roboto": "4.5.0",
+    "@fontsource/open-sans": "^5.0.4",
     "@polymer/polymer": "3.5.1",
     "@vaadin/a11y-base": "24.1.2",
     "@vaadin/accordion": "24.1.2",
@@ -101,7 +101,7 @@
   },
   "vaadin": {
     "dependencies": {
-      "@fontsource/roboto": "4.5.0",
+      "@fontsource/open-sans": "4.5.0",
       "@polymer/polymer": "3.5.1",
       "@vaadin/a11y-base": "24.1.2",
       "@vaadin/accordion": "24.1.2",
@@ -197,7 +197,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0"
     },
-    "hash": "29fd80fe3db40c6dc5af99b8f6650fdc66b20191d4c64eee1afc592b8d6f259e"
+    "hash": "c56e15dca75750de2401e826a1c147cc94e2abb69d3bab412dd5d96efaa68c31"
   },
   "overrides": {
     "@vaadin/bundles": "$@vaadin/bundles",
@@ -272,10 +272,10 @@
     "construct-style-sheets-polyfill": "$construct-style-sheets-polyfill",
     "lit": "$lit",
     "@polymer/polymer": "$@polymer/polymer",
-    "@fontsource/roboto": "$@fontsource/roboto",
     "proj4": "$proj4",
     "@vaadin/vaadin-themable-mixin": "$@vaadin/vaadin-themable-mixin",
     "date-fns": "$date-fns",
-    "mobile-drag-drop": "$mobile-drag-drop"
+    "mobile-drag-drop": "$mobile-drag-drop",
+    "@fontsource/open-sans": "$@fontsource/open-sans"
   }
 }
