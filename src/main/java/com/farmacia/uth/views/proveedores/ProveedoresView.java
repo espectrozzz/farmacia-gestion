@@ -1,7 +1,6 @@
 package com.farmacia.uth.views.proveedores;
 
 import com.farmacia.uth.data.entity.Proveedor;
-import com.farmacia.uth.data.service.ProveedorService;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -11,20 +10,24 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.data.binder.BeanValidationBinder;
-import com.vaadin.flow.data.binder.ValidationException;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+import com.vaadin.flow.theme.lumo.LumoIcon;
+
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
@@ -40,7 +43,7 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
     private final Grid<Proveedor> grid = new Grid<>(Proveedor.class, false);
 
     private TextField nombre;
-    private TextField direccion;
+    private TextArea direccion;
     private TextField telefono;
     private TextField correo;
     private TextField usuario;
@@ -49,14 +52,10 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
 
-    private final BeanValidationBinder<Proveedor> binder;
-
     private Proveedor proveedor;
 
-    private final ProveedorService proveedorService;
 
-    public ProveedoresView(ProveedorService proveedorService) {
-        this.proveedorService = proveedorService;
+    public ProveedoresView() {
         addClassNames("proveedores-view");
 
         // Create UI
@@ -74,15 +73,12 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
         grid.addColumn("correo").setAutoWidth(true);
         grid.addColumn("usuario").setAutoWidth(true);
         grid.addColumn("creado").setAutoWidth(true);
-        grid.setItems(query -> proveedorService.list(
-                PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
-                .stream());
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(PROVEEDOR_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+               // UI.getCurrent().navigate(String.format(PROVEEDOR_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
             } else {
                 clearForm();
                 UI.getCurrent().navigate(ProveedoresView.class);
@@ -90,11 +86,9 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(Proveedor.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
-        binder.bindInstanceFields(this);
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -106,8 +100,6 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
                 if (this.proveedor == null) {
                     this.proveedor = new Proveedor();
                 }
-                binder.writeBean(this.proveedor);
-                proveedorService.update(this.proveedor);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -117,8 +109,6 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
                         "Error updating the data. Somebody else has updated the record while you were making changes.");
                 n.setPosition(Position.MIDDLE);
                 n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            } catch (ValidationException validationException) {
-                Notification.show("Failed to update the data. Check again that all values are valid");
             }
         });
     }
@@ -127,17 +117,6 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> proveedorId = event.getRouteParameters().get(PROVEEDOR_ID).map(Long::parseLong);
         if (proveedorId.isPresent()) {
-            Optional<Proveedor> proveedorFromBackend = proveedorService.get(proveedorId.get());
-            if (proveedorFromBackend.isPresent()) {
-                populateForm(proveedorFromBackend.get());
-            } else {
-                Notification.show(String.format("The requested proveedor was not found, ID = %s", proveedorId.get()),
-                        3000, Notification.Position.BOTTOM_START);
-                // when a row is selected but the data is no longer available,
-                // refresh grid
-                refreshGrid();
-                event.forwardTo(ProveedoresView.class);
-            }
         }
     }
 
@@ -150,13 +129,15 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        nombre = new TextField("Nombre");
-        direccion = new TextField("Direccion");
-        telefono = new TextField("Telefono");
-        correo = new TextField("Correo");
-        usuario = new TextField("Usuario");
-        creado = new DatePicker("Creado");
-        formLayout.add(nombre, direccion, telefono, correo, usuario, creado);
+        H3 headerForm = new H3("Información del Proveedor"); headerForm.addClassName("text-center");
+        nombre = new TextField("Nombre"); nombre.setPrefixComponent(LumoIcon.USER.create()); nombre.setPlaceholder("Juan del Rio");
+        direccion = new TextArea("Direccion"); direccion.setPrefixComponent(VaadinIcon.WORKPLACE.create());
+        H3 prefijo = new H3("+504"); prefijo.addClassName("text-preffix");
+        telefono = new TextField("Telefono"); telefono.setPrefixComponent(prefijo); telefono.setPlaceholder("9598-4316"); telefono.setSuffixComponent(VaadinIcon.PHONE.create());
+        correo = new TextField("Correo"); correo.setPrefixComponent(VaadinIcon.USER_CARD.create()); correo.setPlaceholder("example@gmail.com");
+        usuario = new TextField("Usuario"); usuario.setPrefixComponent(VaadinIcon.USERS.create());
+        creado = new DatePicker("Fecha de Creacion"); creado.setValue(LocalDate.now()); creado.setReadOnly(true);
+        formLayout.add(headerForm, nombre, direccion, telefono, correo, usuario, creado);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -191,7 +172,5 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
 
     private void populateForm(Proveedor value) {
         this.proveedor = value;
-        binder.readBean(this.proveedor);
-
     }
 }

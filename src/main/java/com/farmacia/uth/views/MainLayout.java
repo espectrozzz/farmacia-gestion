@@ -3,7 +3,7 @@ package com.farmacia.uth.views;
 import com.farmacia.uth.views.farmacias.FarmaciasView;
 import com.farmacia.uth.views.medicamentos.MedicamentosView;
 import com.farmacia.uth.views.movimientos.MovimientosView;
-import com.farmacia.uth.views.productos.ProductosView;
+import com.farmacia.uth.views.productos.InventarioView;
 import com.farmacia.uth.views.proveedores.ProveedoresView;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -57,7 +57,7 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Proveedores", ProveedoresView.class, LineAwesomeIcon.TRUCK_SOLID.create()));
         nav.addItem(new SideNavItem("Medicamentos", MedicamentosView.class, LineAwesomeIcon.TABLETS_SOLID.create()));
         nav.addItem(new SideNavItem("Farmacias", FarmaciasView.class, LineAwesomeIcon.HOSPITAL_SOLID.create()));
-        nav.addItem(new SideNavItem("Productos", ProductosView.class, LineAwesomeIcon.LIST_SOLID.create()));
+        nav.addItem(new SideNavItem("Inventario", InventarioView.class, LineAwesomeIcon.LIST_SOLID.create()));
         nav.addItem(new SideNavItem("Movimientos", MovimientosView.class, LineAwesomeIcon.BOX_SOLID.create()));
 
         return nav;

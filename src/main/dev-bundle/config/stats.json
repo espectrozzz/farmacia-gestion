@@ -1,6 +1,6 @@
 {
  "packageJsonDependencies": {
-  "@fontsource/roboto": "4.5.0",
+  "@fontsource/open-sans": "^5.0.4",
   "@polymer/polymer": "3.5.1",
   "@vaadin/a11y-base": "24.1.2",
   "@vaadin/accordion": "24.1.2",
@@ -288,7 +288,7 @@
   "virtualListConnector.js": "e89f6bc6f5cd4765c863ae12721371ebff9079d163679e3989368fb7f74e5e61"
  },
  "themeJsonContents": {
-  "farmaciagestion": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ],\n  \"assets\" : {\n    \"@fontsource/roboto\" : {\n      \"*.css\" : \"@fontsource/roboto\",\n      \"files/*\" : \"@fontsource/roboto/files\"\n    }\n  }\n}"
+  "farmaciagestion": "{\n  \"lumoImports\" : [ \"typography\", \"color\", \"spacing\", \"badge\", \"utility\" ],\n  \"assets\" : {\n    \"@fontsource/open-sans\" : {\n      \"*.css\" : \"@fontsource/open-sans\",\n      \"files/*\" : \"@fontsource/open-sans/files\"\n    }\n  }\n}"
  },
  "entryScripts": [
   "VAADIN/build/indexhtml-de51318a.js"
@@ -324,7 +324,7 @@
    "version": "24.1.2"
   }
  },
- "packageJsonHash": "29fd80fe3db40c6dc5af99b8f6650fdc66b20191d4c64eee1afc592b8d6f259e",
+ "packageJsonHash": "c56e15dca75750de2401e826a1c147cc94e2abb69d3bab412dd5d96efaa68c31",
  "indexHtmlGenerated": [
   "  <script type=\"module\" crossorigin src=\"./VAADIN/build/indexhtml-de51318a.js\"></script>"
  ]

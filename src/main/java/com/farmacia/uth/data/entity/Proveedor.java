@@ -1,20 +1,23 @@
 package com.farmacia.uth.data.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.validation.constraints.Email;
 import java.time.LocalDate;
 
-@Entity
-public class Proveedor extends AbstractEntity {
+public class Proveedor {
 
-    private String nombre;
+	private int id;
+	private String nombre;
     private String direccion;
     private String telefono;
-    @Email
     private String correo;
     private String usuario;
     private LocalDate creado;
 
+    public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
     public String getNombre() {
         return nombre;
     }
