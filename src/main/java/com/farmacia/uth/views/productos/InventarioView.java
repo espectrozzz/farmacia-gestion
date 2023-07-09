@@ -10,6 +10,9 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.router.AfterNavigationEvent;
 import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -17,21 +20,42 @@ import com.vaadin.flow.router.Route;
 import java.util.Arrays;
 import java.util.List;
 
+import org.vaadin.lineawesome.LineAwesomeIcon;
+
 @PageTitle("Inventario")
 @Route(value = "inventario", layout = MainLayout.class)
 public class InventarioView extends Div implements AfterNavigationObserver {
 
     Grid<Person> grid = new Grid<>();
-
+    Button search = new Button("Buscar");
+    Button reset = new Button("Reiniciar");
+    TextField idMed = new TextField("ID del Medicamento");
+    TextField idFarm = new TextField("ID de la Farmacia");
     public InventarioView() {
         addClassName("productos-view");
         setSizeFull();
         grid.setHeight("100%");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS);
         grid.addComponentColumn(person -> createCard(person));
-        add(grid);
+        add(createBody(), grid);
     }
 
+    private Div createBody(){
+    	Div containerBody = new Div();
+    	VerticalLayout bodyLayout = new VerticalLayout();
+    	HorizontalLayout formLayout = new HorizontalLayout();
+    	idMed.setPrefixComponent(LineAwesomeIcon.TABLETS_SOLID.create());idMed.setHelperText("Ingrese el id del medicamento"); idMed.setPlaceholder("1");
+    	idFarm.setPrefixComponent(LineAwesomeIcon.HOSPITAL_SOLID.create()); idFarm.setPlaceholder("1"); idFarm.setHelperText("Ingrese el id de la farmacia");
+    	formLayout.add(idMed, idFarm);
+    	HorizontalLayout buttonLayout = new HorizontalLayout();
+    	search.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    	reset.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
+    	buttonLayout.add(search, reset);
+    	bodyLayout.add(formLayout, buttonLayout);
+    	containerBody.add(bodyLayout);
+    	return containerBody;
+    }
+    
     private HorizontalLayout createCard(Person person) {
         HorizontalLayout card = new HorizontalLayout();
         card.addClassName("card");

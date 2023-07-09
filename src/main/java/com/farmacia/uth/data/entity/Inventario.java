@@ -10,9 +10,6 @@ public class Inventario {
     private String comments;
     private String shares;
 
-    public Person() {
-    }
-
     public String getImage() {
         return image;
     }

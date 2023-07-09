@@ -9,12 +9,15 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.Notification.Position;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -32,8 +35,11 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
     private final Grid<Farmacia> grid = new Grid<>(Farmacia.class, false);
 
     private TextField nombre;
+    private TextArea descripcion;
     private TextField direccion;
+    private TextField correo;
     private TextField telefono;
+    private DatePicker fechaReg;
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
@@ -114,15 +120,18 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
         editorDiv.setClassName("editor");
         editorLayoutDiv.add(editorDiv);
 
+        H3 header = new H3("Informacion de Farmacia"); header.addClassName("text-align-center");
         FormLayout formLayout = new FormLayout();
         nombre = new TextField("Nombre");
+        descripcion = new TextArea("Descripcion");
         direccion = new TextField("Direccion");
+        correo = new TextField("Correo");
         telefono = new TextField("Telefono");
-        formLayout.add(nombre, direccion, telefono);
+        fechaReg = new DatePicker("Fecha de Registro");
+        formLayout.add(nombre, descripcion, direccion, correo, telefono, fechaReg);
 
-        editorDiv.add(formLayout);
+        editorDiv.add(header, formLayout);
         createButtonLayout(editorLayoutDiv);
-
         splitLayout.addToSecondary(editorLayoutDiv);
     }
 
