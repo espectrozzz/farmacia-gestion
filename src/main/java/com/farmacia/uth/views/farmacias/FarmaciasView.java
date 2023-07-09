@@ -22,8 +22,11 @@ import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+
+import java.time.LocalDate;
 import java.util.Optional;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
+import org.vaadin.lineawesome.LineAwesomeIcon;
 
 @PageTitle("Farmacias")
 @Route(value = "farmacias/:farmaciaID?/:action?(edit)", layout = MainLayout.class)
@@ -39,6 +42,7 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
     private TextField direccion;
     private TextField correo;
     private TextField telefono;
+    private TextField user;
     private DatePicker fechaReg;
 
     private final Button cancel = new Button("Cancelar");
@@ -60,12 +64,13 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
 
         // Configure Grid
         grid.addColumn("id").setAutoWidth(true);
-        grid.addColumn("nombre").setAutoWidth(true);
-        grid.addColumn("descripcion").setAutoWidth(true);
-        grid.addColumn("direccion").setAutoWidth(true);
-        grid.addColumn("correo").setAutoWidth(true);
-        grid.addColumn("telefono").setAutoWidth(true);
-        grid.addColumn("fechaCreacion").setAutoWidth(true);
+        grid.addColumn("nombre_farm").setAutoWidth(true);
+        grid.addColumn("descripcion_farm").setAutoWidth(true);
+        grid.addColumn("direccion_farm").setAutoWidth(true);
+        grid.addColumn("correo_farm").setAutoWidth(true);
+        grid.addColumn("telefono_farm").setAutoWidth(true);
+        grid.addColumn("usuario").setAutoWidth(true);
+        grid.addColumn("fecha_creacion").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
@@ -122,13 +127,15 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
 
         H3 header = new H3("Informacion de Farmacia"); header.addClassName("text-align-center");
         FormLayout formLayout = new FormLayout();
-        nombre = new TextField("Nombre");
-        descripcion = new TextArea("Descripcion");
-        direccion = new TextField("Direccion");
-        correo = new TextField("Correo");
-        telefono = new TextField("Telefono");
-        fechaReg = new DatePicker("Fecha de Registro");
-        formLayout.add(nombre, descripcion, direccion, correo, telefono, fechaReg);
+        nombre = new TextField("Nombre"); nombre.setPrefixComponent(LineAwesomeIcon.HOSPITAL_ALT_SOLID.create());
+        descripcion = new TextArea("Descripcion"); descripcion.setPrefixComponent(LineAwesomeIcon.STREET_VIEW_SOLID.create()); descripcion.setHelperText("Ingrese la descripcion visual del estblecimiento");
+        direccion = new TextField("Direccion"); direccion.setPrefixComponent(LineAwesomeIcon.MAP_MARKED_ALT_SOLID.create()); direccion.setHelperText("Ingrese la direccion del establecimiento");
+        correo = new TextField("Correo"); correo.setPrefixComponent(LineAwesomeIcon.AT_SOLID.create()); correo.setPlaceholder("example@gmail.com");
+        Div prefixNumber = new Div(); prefixNumber.setText("+504");
+        telefono = new TextField("Telefono"); telefono.setPrefixComponent(prefixNumber); telefono.setSuffixComponent(LineAwesomeIcon.PHONE_SOLID.create()); telefono.setPlaceholder("9598-4316");
+        user = new TextField("Usuario"); user.setPrefixComponent(LineAwesomeIcon.USER_CIRCLE_SOLID.create());
+        fechaReg = new DatePicker("Fecha de Registro"); fechaReg.setReadOnly(true); fechaReg.setValue(LocalDate.now()); fechaReg.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK_SOLID.create());
+        formLayout.add(nombre, descripcion, direccion, correo, telefono, user, fechaReg);
 
         editorDiv.add(header, formLayout);
         createButtonLayout(editorLayoutDiv);

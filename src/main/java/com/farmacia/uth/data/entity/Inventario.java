@@ -2,67 +2,56 @@ package com.farmacia.uth.data.entity;
 
 public class Inventario {
 
-    private String image;
-    private String name;
-    private String date;
-    private String post;
-    private String likes;
-    private String comments;
-    private String shares;
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getPost() {
-        return post;
-    }
-
-    public void setPost(String post) {
-        this.post = post;
-    }
-
-    public String getLikes() {
-        return likes;
-    }
-
-    public void setLikes(String likes) {
-        this.likes = likes;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public String getShares() {
-        return shares;
-    }
-
-    public void setShares(String shares) {
-        this.shares = shares;
-    }
+	private int id_prod;
+	private int id_med;
+	private int id_farm;
+	private int precio_venta;
+	private int stock_ini;
+	private String usuario;
+	private String fecha_creacion;
+	
+	public int getId_prod() {
+		return id_prod;
+	}
+	public void setId_prod(int id_prod) {
+		this.id_prod = id_prod;
+	}
+	public int getId_med() {
+		return id_med;
+	}
+	public void setId_med(int id_med) {
+		this.id_med = id_med;
+	}
+	public int getId_farm() {
+		return id_farm;
+	}
+	public void setId_farm(int id_farm) {
+		this.id_farm = id_farm;
+	}
+	public int getPrecio_venta() {
+		return precio_venta;
+	}
+	public void setPrecio_venta(int precio_venta) {
+		this.precio_venta = precio_venta;
+	}
+	public int getStock_ini() {
+		return stock_ini;
+	}
+	public void setStock_ini(int stock_ini) {
+		this.stock_ini = stock_ini;
+	}
+	public String getUsuario() {
+		return usuario;
+	}
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+	public String getFecha_creacion() {
+		return fecha_creacion;
+	}
+	public void setFecha_creacion(String fecha_creacion) {
+		this.fecha_creacion = fecha_creacion;
+	}
+ 
+	
 }

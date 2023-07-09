@@ -1,6 +1,6 @@
 package com.farmacia.uth.views.movimientos;
 
-import com.farmacia.uth.data.entity.SamplePerson;
+import com.farmacia.uth.data.entity.Movimiento;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -39,7 +39,7 @@ import org.springframework.data.jpa.domain.Specification;
 @Uses(Icon.class)
 public class MovimientosView extends Div {
 
-    private Grid<SamplePerson> grid;
+    private Grid<Movimiento> grid;
 
     private Filters filters;
 
@@ -79,7 +79,7 @@ public class MovimientosView extends Div {
         return mobileFilters;
     }
 
-    public static class Filters extends Div implements Specification<SamplePerson> {
+    public static class Filters extends Div implements Specification<Movimiento> {
 
         private final TextField name = new TextField("Name");
         private final TextField phone = new TextField("Phone");
@@ -147,7 +147,7 @@ public class MovimientosView extends Div {
         }
 
         @Override
-        public Predicate toPredicate(Root<SamplePerson> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+        public Predicate toPredicate(Root<Movimiento> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
             List<Predicate> predicates = new ArrayList<>();
 
             if (!name.isEmpty()) {
@@ -220,14 +220,13 @@ public class MovimientosView extends Div {
     }
 
     private Component createGrid() {
-        grid = new Grid<>(SamplePerson.class, false);
-        grid.addColumn("firstName").setAutoWidth(true);
-        grid.addColumn("lastName").setAutoWidth(true);
-        grid.addColumn("email").setAutoWidth(true);
-        grid.addColumn("phone").setAutoWidth(true);
-        grid.addColumn("dateOfBirth").setAutoWidth(true);
-        grid.addColumn("occupation").setAutoWidth(true);
-        grid.addColumn("role").setAutoWidth(true);
+        grid = new Grid<>(Movimiento.class, false);
+        grid.addColumn("id_mov").setAutoWidth(true);
+        grid.addColumn("tipo_mov").setAutoWidth(true);
+        grid.addColumn("cantidad").setAutoWidth(true);
+        grid.addColumn("fecha_mov").setAutoWidth(true);
+        grid.addColumn("usuario").setAutoWidth(true);
+        grid.addColumn("id_prod").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
 

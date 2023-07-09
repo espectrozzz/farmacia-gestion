@@ -3,55 +3,62 @@ package com.farmacia.uth.data.entity;
 
 public class Farmacia {
 
-	private String id;
-    private String nombre;
-    private String descripcion;
-    private String direccion;
-    private String correo;
-    private String telefono;
-    private String fechaCreacion;
-	public String getId() {
+	private int id;
+    private String nombre_farm;
+    private String descripcion_farm;
+    private String direccion_farm;
+    private String correo_farm;
+    private String telefono_farm;
+    private String usuario;
+    private String fecha_creacion;
+    
+	public int getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getNombre_farm() {
+		return nombre_farm;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombre_farm(String nombre_farm) {
+		this.nombre_farm = nombre_farm;
 	}
-	public String getDescripcion() {
-		return descripcion;
+	public String getDescripcion_farm() {
+		return descripcion_farm;
 	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setDescripcion_farm(String descripcion_farm) {
+		this.descripcion_farm = descripcion_farm;
 	}
-	public String getDireccion() {
-		return direccion;
+	public String getDireccion_farm() {
+		return direccion_farm;
 	}
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+	public void setDireccion_farm(String direccion_farm) {
+		this.direccion_farm = direccion_farm;
 	}
-	public String getCorreo() {
-		return correo;
+	public String getCorreo_farm() {
+		return correo_farm;
 	}
-	public void setCorreo(String correo) {
-		this.correo = correo;
+	public void setCorreo_farm(String correo_farm) {
+		this.correo_farm = correo_farm;
 	}
-	public String getTelefono() {
-		return telefono;
+	public String getTelefono_farm() {
+		return telefono_farm;
 	}
-	public void setTelefono(String telefono) {
-		this.telefono = telefono;
+	public void setTelefono_farm(String telefono_farm) {
+		this.telefono_farm = telefono_farm;
 	}
-	public String getFechaCreacion() {
-		return fechaCreacion;
+	public String getUsuario() {
+		return usuario;
 	}
-	public void setFechaCreacion(String fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
-    
-    
+	public String getFecha_creacion() {
+		return fecha_creacion;
+	}
+	public void setFecha_creacion(String fecha_creacion) {
+		this.fecha_creacion = fecha_creacion;
+	}
+
 }
