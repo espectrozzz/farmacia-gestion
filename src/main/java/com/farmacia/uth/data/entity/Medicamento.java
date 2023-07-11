@@ -1,47 +1,55 @@
 package com.farmacia.uth.data.entity;
 
 public class Medicamento {
-	private String id;
-	private String nombre;
-	private String proveedor;
-	private String descripcion;
-	private String fechaCreacion;
-	private String fechaVencimiento;
-	public String getId() {
-		return id;
+	private int id_med;
+	private String nombre_med;
+	private String descripcion_med;
+	private String usuario;
+	private String fecha_creacion;
+	private String fecha_vencimiento;
+	private int id_prov;
+	
+	public int getId_med() {
+		return id_med;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setId_med(int id_med) {
+		this.id_med = id_med;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getNombre_med() {
+		return nombre_med;
 	}
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNombre_med(String nombre_med) {
+		this.nombre_med = nombre_med;
 	}
-	public String getProveedor() {
-		return proveedor;
+	public String getDescripcion_med() {
+		return descripcion_med;
 	}
-	public void setProveedor(String proveedor) {
-		this.proveedor = proveedor;
+	public void setDescripcion_med(String descripcion_med) {
+		this.descripcion_med = descripcion_med;
 	}
-	public String getDescripcion() {
-		return descripcion;
+	public String getUsuario() {
+		return usuario;
 	}
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
 	}
-	public String getFechaCreacion() {
-		return fechaCreacion;
+	public String getFecha_creacion() {
+		return fecha_creacion;
 	}
-	public void setFechaCreacion(String fechaCreacion) {
-		this.fechaCreacion = fechaCreacion;
+	public void setFecha_creacion(String fecha_creacion) {
+		this.fecha_creacion = fecha_creacion;
 	}
-	public String getFechaVencimiento() {
-		return fechaVencimiento;
+	public String getFecha_vencimiento() {
+		return fecha_vencimiento;
 	}
-	public void setFechaVencimiento(String fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
+	public void setFecha_vencimiento(String fecha_vencimiento) {
+		this.fecha_vencimiento = fecha_vencimiento;
+	}
+	public int getId_prov() {
+		return id_prov;
+	}
+	public void setId_prov(int id_prov) {
+		this.id_prov = id_prov;
 	}
 	
 	

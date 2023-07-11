@@ -46,8 +46,7 @@ public class MedicamentosView extends Div {
     private ComboBox<Proveedor> proveedor = new ComboBox<>("Proveedor");
     private DatePicker fechaRegistro = new DatePicker("Fecha de Registro");
     private DatePicker fechaVencimiento = new DatePicker("Fecha de Caducidad");
-    private PhoneNumberField phone = new PhoneNumberField("Phone number");
-    private TextField occupation = new TextField("Occupation");
+    private TextField user = new TextField("Usuario");
 
     private Button cancel = new Button("Cancelar");
     private Button save = new Button("Guardar");
@@ -71,14 +70,14 @@ public class MedicamentosView extends Div {
     }
 
     private void createGridLayout(SplitLayout splitLayout) {
-		// TODO Auto-generated method stub
     	Div gridContainer = new Div();
-    	gridData.addColumn("id").setAutoWidth(true);
-    	gridData.addColumn("nombre").setAutoWidth(true);
-    	gridData.addColumn("proveedor").setAutoWidth(true);
-    	gridData.addColumn("descripcion").setAutoWidth(true);
-    	gridData.addColumn("fechaCreacion").setAutoWidth(true);
-    	gridData.addColumn("fechaVencimiento").setAutoWidth(true);
+    	gridData.addColumn("id_med").setAutoWidth(true);
+    	gridData.addColumn("nombre_med").setAutoWidth(true);
+    	gridData.addColumn("descripcion_med").setAutoWidth(true);
+    	gridData.addColumn("usuario").setAutoWidth(true);
+    	gridData.addColumn("fecha_creacion").setAutoWidth(true);
+    	gridData.addColumn("fecha_vencimiento").setAutoWidth(true);
+    	gridData.addColumn("id_prov").setAutoWidth(true);
     	gridData.addThemeVariants(GridVariant.LUMO_NO_BORDER);
     	gridContainer.add(gridData);
 		splitLayout.addToSecondary(gridContainer);
@@ -96,10 +95,11 @@ public class MedicamentosView extends Div {
     	FormLayout formLayout = new FormLayout(); formLayout.addClassName("form-layout");
     	nombre.setPrefixComponent(LineAwesomeIcon.TABLETS_SOLID.create());
     	descripcion.setPrefixComponent(LineAwesomeIcon.INFO_SOLID.create());
-    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(setProv()); proveedor.setItemLabelGenerator(Proveedor::getNombre); 
+    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(setProv()); proveedor.setItemLabelGenerator(Proveedor::getNombre_prov); 
+    	user.setPrefixComponent(LineAwesomeIcon.USER_CIRCLE_SOLID.create());
     	fechaRegistro.setValue(LocalDate.now()); fechaRegistro.setReadOnly(true); fechaVencimiento.setPrefixComponent(LineAwesomeIcon.HOURGLASS_END_SOLID.create());
     	fechaVencimiento.setHelperText("Selecciones o sngrese la fecha de vencimiento"); 
-        formLayout.add(nombre, descripcion, proveedor,fechaRegistro, fechaVencimiento);
+        formLayout.add(nombre, descripcion, proveedor, user, fechaRegistro, fechaVencimiento);
         containerForm.add(formLayout, createButtonLayout());
         splitLayout.addToPrimary(containerForm);
     }
@@ -108,19 +108,19 @@ public class MedicamentosView extends Div {
     	List<Proveedor> lista = new ArrayList<>();
     	Proveedor prov1 = new Proveedor();
     	prov1.setId(1);
-    	prov1.setNombre("Farsiman");
+    	prov1.setNombre_prov("Farsiman");
     	Proveedor prov2 = new Proveedor();
     	prov2.setId(2);
-    	prov2.setNombre("QuimiFarma");
+    	prov2.setNombre_prov("QuimiFarma");
     	Proveedor prov3 = new Proveedor();
     	prov3.setId(3);
-    	prov3.setNombre("Central Quimica de Honduras");
+    	prov3.setNombre_prov("Central Quimica de Honduras");
     	Proveedor prov4 = new Proveedor();
     	prov4.setId(4);
-    	prov4.setNombre("Farmacias del Ahorro");
+    	prov4.setNombre_prov("Farmacias del Ahorro");
     	Proveedor prov5 = new Proveedor();
     	prov5.setId(5);
-    	prov5.setNombre("Pfizher");
+    	prov5.setNombre_prov("Pfizher");
     	lista.add(prov1);
     	lista.add(prov2);
     	lista.add(prov3);

@@ -67,12 +67,13 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("nombre").setAutoWidth(true);
-        grid.addColumn("direccion").setAutoWidth(true);
+        grid.addColumn("id").setAutoWidth(true);
+        grid.addColumn("nombre_prov").setAutoWidth(true);
+        grid.addColumn("direccion_pro").setAutoWidth(true);
         grid.addColumn("telefono").setAutoWidth(true);
-        grid.addColumn("correo").setAutoWidth(true);
+        grid.addColumn("correo_pro").setAutoWidth(true);
         grid.addColumn("usuario").setAutoWidth(true);
-        grid.addColumn("creado").setAutoWidth(true);
+        grid.addColumn("fecha_creacion").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form

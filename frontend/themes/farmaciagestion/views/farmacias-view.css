@@ -42,3 +42,7 @@
 .farmacias-view .grid-wrapper {
   width: 100%;
 }
+
+.farmacias-view .text-align-center{
+	text-align: center;
+}
