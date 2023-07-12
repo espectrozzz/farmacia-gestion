@@ -1,5 +1,7 @@
 package com.farmacia.uth.views.proveedores;
 
+import com.farmacia.uth.data.controller.ProveedorInteractor;
+import com.farmacia.uth.data.controller.ProveedorInteractorImpl;
 import com.farmacia.uth.data.entity.Proveedor;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.UI;
@@ -28,14 +30,17 @@ import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
 import com.vaadin.flow.theme.lumo.LumoIcon;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Collection;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 @PageTitle("Proveedores")
 @Route(value = "proveedores/:proveedorID?/:action?(edit)", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
-public class ProveedoresView extends Div implements BeforeEnterObserver {
+public class ProveedoresView extends Div implements BeforeEnterObserver, ProveedorViewModel {
 
     private final String PROVEEDOR_ID = "proveedorID";
     private final String PROVEEDOR_EDIT_ROUTE_TEMPLATE = "proveedores/%s/edit";
@@ -48,16 +53,20 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
     private TextField correo;
     private TextField usuario;
     private DatePicker creado;
+    private List<Proveedor> proveedores;
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
 
     private Proveedor proveedor;
+    private ProveedorInteractor controlador;
 
 
     public ProveedoresView() {
         addClassNames("proveedores-view");
-
+        
+        proveedores = new ArrayList<>();
+        this.controlador = new ProveedorInteractorImpl(this);
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
 
@@ -68,27 +77,26 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
 
         // Configure Grid
         grid.addColumn("id").setAutoWidth(true);
-        grid.addColumn("nombre_prov").setAutoWidth(true);
-        grid.addColumn("direccion_pro").setAutoWidth(true);
+        grid.addColumn("nombre").setAutoWidth(true);
+        grid.addColumn("direccion").setAutoWidth(true);
         grid.addColumn("telefono").setAutoWidth(true);
-        grid.addColumn("correo_pro").setAutoWidth(true);
+        grid.addColumn("correo").setAutoWidth(true);
         grid.addColumn("usuario").setAutoWidth(true);
-        grid.addColumn("fecha_creacion").setAutoWidth(true);
+        grid.addColumn("creado").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
             if (event.getValue() != null) {
-               // UI.getCurrent().navigate(String.format(PROVEEDOR_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
+                UI.getCurrent().navigate(String.format(PROVEEDOR_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
             } else {
                 clearForm();
                 UI.getCurrent().navigate(ProveedoresView.class);
             }
         });
 
-        // Configure Form
-
-        // Bind fields. This is where you'd define e.g. validation rules
+        // Consultar proveedores
+        this.controlador.consultarProveedores();
 
 
         cancel.addClickListener(e -> {
@@ -174,4 +182,11 @@ public class ProveedoresView extends Div implements BeforeEnterObserver {
     private void populateForm(Proveedor value) {
         this.proveedor = value;
     }
+
+	@Override
+	public void refrescarGridProveedores(List<Proveedor> proveedor) {
+		Collection<Proveedor> items = proveedor;
+		grid.setItems(items);
+		this.proveedores = proveedor;
+	}
 }
