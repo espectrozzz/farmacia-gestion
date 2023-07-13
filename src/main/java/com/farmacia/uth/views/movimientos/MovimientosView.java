@@ -1,5 +1,7 @@
 package com.farmacia.uth.views.movimientos;
 
+import com.farmacia.uth.data.controller.MovimientoInteractor;
+import com.farmacia.uth.data.controller.MovimientoInteractorImpl;
 import com.farmacia.uth.data.entity.Movimiento;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
@@ -7,7 +9,7 @@ import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.combobox.MultiSelectComboBox;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.grid.Grid;
@@ -33,25 +35,28 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.vaadin.lineawesome.LineAwesomeIcon;
 
 @PageTitle("Movimientos")
 @Route(value = "movimientos", layout = MainLayout.class)
 @Uses(Icon.class)
-public class MovimientosView extends Div {
+public class MovimientosView extends Div implements MovimientosViewModel{
 
-    private Grid<Movimiento> grid;
+    private Grid<Movimiento> grid = new Grid<>(Movimiento.class, false);
 
     private Filters filters;
+    private MovimientoInteractor controlador;
 
     public MovimientosView() {
         setSizeFull();
         addClassNames("movimientos-view");
-
+        this.controlador = new MovimientoInteractorImpl(this);
         filters = new Filters(() -> refreshGrid());
         VerticalLayout layout = new VerticalLayout(createMobileFilters(), filters, createGrid());
         layout.setSizeFull();
         layout.setPadding(false);
         layout.setSpacing(false);
+        this.controlador.consultarMovimientos();
         add(layout);
     }
 
@@ -81,12 +86,11 @@ public class MovimientosView extends Div {
 
     public static class Filters extends Div implements Specification<Movimiento> {
 
-        private final TextField name = new TextField("Name");
-        private final TextField phone = new TextField("Phone");
-        private final DatePicker startDate = new DatePicker("Date of Birth");
+        private final TextField id_movimiento = new TextField("Id Movimiento");
+        private final TextField id_producto = new TextField("Id Producto");
+        private final DatePicker startDate = new DatePicker("Fecha");
         private final DatePicker endDate = new DatePicker();
-        private final MultiSelectComboBox<String> occupations = new MultiSelectComboBox<>("Occupation");
-        private final CheckboxGroup<String> roles = new CheckboxGroup<>("Role");
+        private final ComboBox<String> movimiento = new ComboBox<>("Movimiento");
 
         public Filters(Runnable onSearch) {
 
@@ -94,26 +98,21 @@ public class MovimientosView extends Div {
             addClassName("filter-layout");
             addClassNames(LumoUtility.Padding.Horizontal.LARGE, LumoUtility.Padding.Vertical.MEDIUM,
                     LumoUtility.BoxSizing.BORDER);
-            name.setPlaceholder("First or last name");
-
-            occupations.setItems("Insurance Clerk", "Mortarman", "Beer Coil Cleaner", "Scale Attendant");
-
-            roles.setItems("Worker", "Supervisor", "Manager", "External");
-            roles.addClassName("double-width");
+            id_movimiento.setPlaceholder("1"); id_movimiento.setPrefixComponent(LineAwesomeIcon.FILE_ALT_SOLID.create());
+            id_producto.setPlaceholder("1"); id_producto.setPrefixComponent(LineAwesomeIcon.BOXES_SOLID.create());
+            movimiento.setItems("ingreso", "egreso"); movimiento.setPrefixComponent(LineAwesomeIcon.TRUCK_MOVING_SOLID.create());
 
             // Action buttons
-            Button resetBtn = new Button("Reset");
+            Button resetBtn = new Button("Reiniciar");
             resetBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
             resetBtn.addClickListener(e -> {
-                name.clear();
-                phone.clear();
+                id_movimiento.clear();
+                id_producto.clear();
                 startDate.clear();
                 endDate.clear();
-                occupations.clear();
-                roles.clear();
-                onSearch.run();
+                movimiento.clear();
             });
-            Button searchBtn = new Button("Search");
+            Button searchBtn = new Button("Buscar");
             searchBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
             searchBtn.addClickListener(e -> onSearch.run());
 
@@ -121,13 +120,13 @@ public class MovimientosView extends Div {
             actions.addClassName(LumoUtility.Gap.SMALL);
             actions.addClassName("actions");
 
-            add(name, phone, createDateRangeFilter(), occupations, roles, actions);
+            add(id_movimiento, id_producto, createDateRangeFilter(), movimiento, actions);
         }
 
         private Component createDateRangeFilter() {
-            startDate.setPlaceholder("From");
+            startDate.setPlaceholder("Desde");
 
-            endDate.setPlaceholder("To");
+            endDate.setPlaceholder("Hasta");
 
             // For screen readers
             setAriaLabel(startDate, "From date");
@@ -149,78 +148,12 @@ public class MovimientosView extends Div {
         @Override
         public Predicate toPredicate(Root<Movimiento> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
             List<Predicate> predicates = new ArrayList<>();
-
-            if (!name.isEmpty()) {
-                String lowerCaseFilter = name.getValue().toLowerCase();
-                Predicate firstNameMatch = criteriaBuilder.like(criteriaBuilder.lower(root.get("firstName")),
-                        lowerCaseFilter + "%");
-                Predicate lastNameMatch = criteriaBuilder.like(criteriaBuilder.lower(root.get("lastName")),
-                        lowerCaseFilter + "%");
-                predicates.add(criteriaBuilder.or(firstNameMatch, lastNameMatch));
-            }
-            if (!phone.isEmpty()) {
-                String databaseColumn = "phone";
-                String ignore = "- ()";
-
-                String lowerCaseFilter = ignoreCharacters(ignore, phone.getValue().toLowerCase());
-                Predicate phoneMatch = criteriaBuilder.like(
-                        ignoreCharacters(ignore, criteriaBuilder, criteriaBuilder.lower(root.get(databaseColumn))),
-                        "%" + lowerCaseFilter + "%");
-                predicates.add(phoneMatch);
-
-            }
-            if (startDate.getValue() != null) {
-                String databaseColumn = "dateOfBirth";
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get(databaseColumn),
-                        criteriaBuilder.literal(startDate.getValue())));
-            }
-            if (endDate.getValue() != null) {
-                String databaseColumn = "dateOfBirth";
-                predicates.add(criteriaBuilder.greaterThanOrEqualTo(criteriaBuilder.literal(endDate.getValue()),
-                        root.get(databaseColumn)));
-            }
-            if (!occupations.isEmpty()) {
-                String databaseColumn = "occupation";
-                List<Predicate> occupationPredicates = new ArrayList<>();
-                for (String occupation : occupations.getValue()) {
-                    occupationPredicates
-                            .add(criteriaBuilder.equal(criteriaBuilder.literal(occupation), root.get(databaseColumn)));
-                }
-                predicates.add(criteriaBuilder.or(occupationPredicates.toArray(Predicate[]::new)));
-            }
-            if (!roles.isEmpty()) {
-                String databaseColumn = "role";
-                List<Predicate> rolePredicates = new ArrayList<>();
-                for (String role : roles.getValue()) {
-                    rolePredicates.add(criteriaBuilder.equal(criteriaBuilder.literal(role), root.get(databaseColumn)));
-                }
-                predicates.add(criteriaBuilder.or(rolePredicates.toArray(Predicate[]::new)));
-            }
             return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
-        }
-
-        private String ignoreCharacters(String characters, String in) {
-            String result = in;
-            for (int i = 0; i < characters.length(); i++) {
-                result = result.replace("" + characters.charAt(i), "");
-            }
-            return result;
-        }
-
-        private Expression<String> ignoreCharacters(String characters, CriteriaBuilder criteriaBuilder,
-                Expression<String> inExpression) {
-            Expression<String> expression = inExpression;
-            for (int i = 0; i < characters.length(); i++) {
-                expression = criteriaBuilder.function("replace", String.class, expression,
-                        criteriaBuilder.literal(characters.charAt(i)), criteriaBuilder.literal(""));
-            }
-            return expression;
         }
 
     }
 
     private Component createGrid() {
-        grid = new Grid<>(Movimiento.class, false);
         grid.addColumn("id_mov").setAutoWidth(true);
         grid.addColumn("tipo_mov").setAutoWidth(true);
         grid.addColumn("cantidad").setAutoWidth(true);
@@ -236,5 +169,11 @@ public class MovimientosView extends Div {
     private void refreshGrid() {
         grid.getDataProvider().refreshAll();
     }
+
+	@Override
+	public void refrescarGridMovimientos(List<Movimiento> movimiento) {
+		List<Movimiento> items = movimiento;
+		grid.setItems(items);
+	}
 
 }

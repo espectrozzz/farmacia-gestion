@@ -3,7 +3,7 @@ package com.farmacia.uth.data.entity;
 
 public class Farmacia {
 
-	private int id;
+	private int id_far;
     private String nombre_farm;
     private String descripcion_farm;
     private String direccion_farm;
@@ -11,11 +11,13 @@ public class Farmacia {
     private String telefono_farm;
     private String usuario;
     private String fecha_creacion;
-	public int getId() {
-		return id;
+
+
+	public int getId_far() {
+		return id_far;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setId_far(int id_far) {
+		this.id_far = id_far;
 	}
 	public String getNombre_farm() {
 		return nombre_farm;

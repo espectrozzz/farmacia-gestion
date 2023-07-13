@@ -8,6 +8,7 @@ import com.farmacia.uth.data.entity.ResponseMedicamentos;
 import com.farmacia.uth.data.entity.ResponseFarmacias;
 import com.farmacia.uth.data.entity.ResponseInventory;
 import com.farmacia.uth.data.entity.ResponseProveedores;
+import com.farmacia.uth.data.entity.ResponseMovimientos;
 
 public class RepositoryInventoryImpl {
 	private static RepositoryInventoryImpl instance;
@@ -66,4 +67,15 @@ public class RepositoryInventoryImpl {
 			return null;
 		}
 	}
+	
+	public ResponseMovimientos getMovimientos() throws IOException {
+		Call<ResponseMovimientos> call = client.getDataBaseInventory().obtenerMovimientos();
+		Response<ResponseMovimientos> response = call.execute();
+		if(response.isSuccessful()) {
+			return response.body();
+		}else {
+			return null;
+		}
+	}
+	
 }

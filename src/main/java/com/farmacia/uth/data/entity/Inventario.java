@@ -1,32 +1,31 @@
-package com.farmacia.uth.data.entity;
+	package com.farmacia.uth.data.entity;
 
 public class Inventario {
 
 	private int id_prod;
-	private int id_med;
-	private int id_farm;
+	private String nombre_medicamento;
+	private String nombre_farmacia;
 	private int precio_venta;
-	private int stock_ini;
+	private int stock_inicial;
 	private String usuario;
 	private String fecha_creacion;
-	
 	public int getId_prod() {
 		return id_prod;
 	}
 	public void setId_prod(int id_prod) {
 		this.id_prod = id_prod;
 	}
-	public int getId_med() {
-		return id_med;
+	public String getNombre_medicamento() {
+		return nombre_medicamento;
 	}
-	public void setId_med(int id_med) {
-		this.id_med = id_med;
+	public void setNombre_medicamento(String nombre_medicamento) {
+		this.nombre_medicamento = nombre_medicamento;
 	}
-	public int getId_farm() {
-		return id_farm;
+	public String getNombre_farmacia() {
+		return nombre_farmacia;
 	}
-	public void setId_farm(int id_farm) {
-		this.id_farm = id_farm;
+	public void setNombre_farmacia(String nombre_farmacia) {
+		this.nombre_farmacia = nombre_farmacia;
 	}
 	public int getPrecio_venta() {
 		return precio_venta;
@@ -34,11 +33,11 @@ public class Inventario {
 	public void setPrecio_venta(int precio_venta) {
 		this.precio_venta = precio_venta;
 	}
-	public int getStock_ini() {
-		return stock_ini;
+	public int getStock_inicial() {
+		return stock_inicial;
 	}
-	public void setStock_ini(int stock_ini) {
-		this.stock_ini = stock_ini;
+	public void setStock_inicial(int stock_inicial) {
+		this.stock_inicial = stock_inicial;
 	}
 	public String getUsuario() {
 		return usuario;
@@ -52,6 +51,5 @@ public class Inventario {
 	public void setFecha_creacion(String fecha_creacion) {
 		this.fecha_creacion = fecha_creacion;
 	}
- 
 	
 }
