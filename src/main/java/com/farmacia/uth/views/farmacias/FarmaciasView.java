@@ -50,6 +50,7 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
     private TextField user;
     private DatePicker fechaReg;
     private List<Farmacia> farmacias;
+    
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
