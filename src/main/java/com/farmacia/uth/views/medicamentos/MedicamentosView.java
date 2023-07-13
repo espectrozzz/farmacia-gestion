@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
+import com.farmacia.uth.data.controller.MedicamentoInteractor;
+import com.farmacia.uth.data.controller.MedicamentoInteractorImpl;
 import com.farmacia.uth.data.entity.Medicamento;
 import com.farmacia.uth.data.entity.Proveedor;
 import com.farmacia.uth.views.MainLayout;
@@ -37,7 +39,7 @@ import java.util.Collection;
 @PageTitle("Medicamentos")
 @Route(value = "medicamentos", layout = MainLayout.class)
 @Uses(Icon.class)
-public class MedicamentosView extends Div {
+public class MedicamentosView extends Div implements MedicamentosViewModel {
 
 	Grid<Medicamento> gridData = new Grid<>(Medicamento.class, false);
 	
@@ -47,17 +49,22 @@ public class MedicamentosView extends Div {
     private DatePicker fechaRegistro = new DatePicker("Fecha de Registro");
     private DatePicker fechaVencimiento = new DatePicker("Fecha de Caducidad");
     private TextField user = new TextField("Usuario");
+    private List<Medicamento> medicamentos;
 
     private Button cancel = new Button("Cancelar");
     private Button save = new Button("Guardar");
+    
+    private MedicamentoInteractor controlador;
 
     public MedicamentosView() {
         addClassName("medicamentos-view");
+        this.controlador = new MedicamentoInteractorImpl(this);
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
         createFormLayout(splitLayout);
         createGridLayout(splitLayout);
         add(createTitle());
+        this.controlador.consultarMedicamentos();
 //        add(createFormLayout());
 //        add(createButtonLayout());
         add(splitLayout);
@@ -95,7 +102,7 @@ public class MedicamentosView extends Div {
     	FormLayout formLayout = new FormLayout(); formLayout.addClassName("form-layout");
     	nombre.setPrefixComponent(LineAwesomeIcon.TABLETS_SOLID.create());
     	descripcion.setPrefixComponent(LineAwesomeIcon.INFO_SOLID.create());
-    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(setProv()); proveedor.setItemLabelGenerator(Proveedor::getNombre); 
+    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(setProv()); proveedor.setItemLabelGenerator(Proveedor::getNombre_prov); 
     	user.setPrefixComponent(LineAwesomeIcon.USER_CIRCLE_SOLID.create());
     	fechaRegistro.setValue(LocalDate.now()); fechaRegistro.setReadOnly(true); fechaVencimiento.setPrefixComponent(LineAwesomeIcon.HOURGLASS_END_SOLID.create());
     	fechaVencimiento.setHelperText("Selecciones o sngrese la fecha de vencimiento"); 
@@ -108,19 +115,19 @@ public class MedicamentosView extends Div {
     	List<Proveedor> lista = new ArrayList<>();
     	Proveedor prov1 = new Proveedor();
     	prov1.setId(1);
-    	prov1.setNombre("Farsiman");
+    	prov1.setNombre_prov("Farsiman");
     	Proveedor prov2 = new Proveedor();
     	prov2.setId(2);
-    	prov2.setNombre("QuimiFarma");
+    	prov2.setNombre_prov("QuimiFarma");
     	Proveedor prov3 = new Proveedor();
     	prov3.setId(3);
-    	prov3.setNombre("Central Quimica de Honduras");
+    	prov3.setNombre_prov("Central Quimica de Honduras");
     	Proveedor prov4 = new Proveedor();
     	prov4.setId(4);
-    	prov4.setNombre("Farmacias del Ahorro");
+    	prov4.setNombre_prov("Farmacias del Ahorro");
     	Proveedor prov5 = new Proveedor();
     	prov5.setId(5);
-    	prov5.setNombre("Pfizher");
+    	prov5.setNombre_prov("Pfizher");
     	lista.add(prov1);
     	lista.add(prov2);
     	lista.add(prov3);
@@ -179,5 +186,12 @@ public class MedicamentosView extends Div {
             }
         }
     }
+
+	@Override
+	public void refrescarGridMedicamentos(List<Medicamento> medicamento) {
+		Collection<Medicamento> items = medicamento;
+		gridData.setItems(items);
+		this.medicamentos = medicamento;
+	}
 
 }
