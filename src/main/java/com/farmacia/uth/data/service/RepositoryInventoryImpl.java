@@ -3,9 +3,6 @@ package com.farmacia.uth.data.service;
 import java.io.IOException;
 import retrofit2.Call;
 import retrofit2.Response;
-
-import com.farmacia.uth.data.entity.ResponseMedicamentos;
-import com.farmacia.uth.data.entity.ResponseFarmacias;
 import com.farmacia.uth.data.entity.ResponseInventory;
 import com.farmacia.uth.data.entity.ResponseProveedores;
 
@@ -43,26 +40,6 @@ public class RepositoryInventoryImpl {
 		if(response.isSuccessful()) {
 			return response.body();
 		} else {
-			return null;
-		}
-	}
-
-	public ResponseFarmacias getFarmacias() throws IOException {
-		Call<ResponseFarmacias> call = client.getDataBaseInventory().obtenerFamarcias();
-		Response<ResponseFarmacias> response = call.execute();
-		if(response.isSuccessful()) {
-			return response.body();
-		} else {			
-			return null;
-		}
-	}
-
-	public ResponseMedicamentos getMedicamentos() throws IOException {
-		Call<ResponseMedicamentos> call = client.getDataBaseInventory().obtenerMedicamentos();
-		Response<ResponseMedicamentos> response = call.execute();
-		if(response.isSuccessful()) {
-			return response.body();
-		} else {			
 			return null;
 		}
 	}
