@@ -1,10 +1,9 @@
 package com.farmacia.uth.views.medicamentos;
 
 import java.time.LocalDate;
+
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
-import com.farmacia.uth.data.controller.ProveedorInteractor;
-import com.farmacia.uth.data.controller.ProveedorInteractorImpl;
 import com.farmacia.uth.data.entity.Medicamento;
 import com.farmacia.uth.data.entity.Proveedor;
 import com.farmacia.uth.views.MainLayout;
@@ -30,7 +29,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoIcon;
-import com.farmacia.uth.views.proveedores.ProveedorViewModel;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ import java.util.Collection;
 @PageTitle("Medicamentos")
 @Route(value = "medicamentos", layout = MainLayout.class)
 @Uses(Icon.class)
-public class MedicamentosView extends Div implements ProveedorViewModel{
+public class MedicamentosView extends Div {
 
 	Grid<Medicamento> gridData = new Grid<>(Medicamento.class, false);
 	
@@ -53,15 +51,8 @@ public class MedicamentosView extends Div implements ProveedorViewModel{
     private Button cancel = new Button("Cancelar");
     private Button save = new Button("Guardar");
 
-    private List<Proveedor> proveedores;
-    private ProveedorInteractor controlador;
-    
     public MedicamentosView() {
         addClassName("medicamentos-view");
-        proveedores = new ArrayList<>();
-        this.controlador = new ProveedorInteractorImpl(this);
-        this.controlador.consultarProveedores();
-        
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
         createFormLayout(splitLayout);
@@ -104,10 +95,10 @@ public class MedicamentosView extends Div implements ProveedorViewModel{
     	FormLayout formLayout = new FormLayout(); formLayout.addClassName("form-layout");
     	nombre.setPrefixComponent(LineAwesomeIcon.TABLETS_SOLID.create());
     	descripcion.setPrefixComponent(LineAwesomeIcon.INFO_SOLID.create());
-    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(proveedores); proveedor.setItemLabelGenerator(Proveedor::getNombre_prov); 
+    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(setProv()); proveedor.setItemLabelGenerator(Proveedor::getNombre); 
     	user.setPrefixComponent(LineAwesomeIcon.USER_CIRCLE_SOLID.create());
     	fechaRegistro.setValue(LocalDate.now()); fechaRegistro.setReadOnly(true); fechaVencimiento.setPrefixComponent(LineAwesomeIcon.HOURGLASS_END_SOLID.create());
-    	fechaVencimiento.setHelperText("Selecciones o ingrese la fecha de vencimiento"); 
+    	fechaVencimiento.setHelperText("Selecciones o sngrese la fecha de vencimiento"); 
         formLayout.add(nombre, descripcion, proveedor, user, fechaRegistro, fechaVencimiento);
         containerForm.add(formLayout, createButtonLayout());
         splitLayout.addToPrimary(containerForm);
@@ -116,20 +107,20 @@ public class MedicamentosView extends Div implements ProveedorViewModel{
     private List<Proveedor> setProv() {
     	List<Proveedor> lista = new ArrayList<>();
     	Proveedor prov1 = new Proveedor();
-    	prov1.setId_prov(1);
-    	prov1.setNombre_prov("Farsiman");
+    	prov1.setId(1);
+    	prov1.setNombre("Farsiman");
     	Proveedor prov2 = new Proveedor();
-    	prov2.setId_prov(2);
-    	prov2.setNombre_prov("QuimiFarma");
+    	prov2.setId(2);
+    	prov2.setNombre("QuimiFarma");
     	Proveedor prov3 = new Proveedor();
-    	prov3.setId_prov(3);
-    	prov3.setNombre_prov("Central Quimica de Honduras");
+    	prov3.setId(3);
+    	prov3.setNombre("Central Quimica de Honduras");
     	Proveedor prov4 = new Proveedor();
-    	prov4.setId_prov(4);
-    	prov4.setNombre_prov("Farmacias del Ahorro");
+    	prov4.setId(4);
+    	prov4.setNombre("Farmacias del Ahorro");
     	Proveedor prov5 = new Proveedor();
-    	prov5.setId_prov(5);
-    	prov5.setNombre_prov("Pfizher");
+    	prov5.setId(5);
+    	prov5.setNombre("Pfizher");
     	lista.add(prov1);
     	lista.add(prov2);
     	lista.add(prov3);
@@ -188,10 +179,5 @@ public class MedicamentosView extends Div implements ProveedorViewModel{
             }
         }
     }
-
-	@Override
-	public void refrescarGridProveedores(List<Proveedor> proveedor) {
-		this.proveedores = proveedor;
-	}
 
 }
