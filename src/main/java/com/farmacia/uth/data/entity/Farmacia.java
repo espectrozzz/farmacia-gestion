@@ -11,7 +11,6 @@ public class Farmacia {
     private String telefono_farm;
     private String usuario;
     private String fecha_creacion;
-    
 	public int getId() {
 		return id;
 	}
@@ -60,5 +59,6 @@ public class Farmacia {
 	public void setFecha_creacion(String fecha_creacion) {
 		this.fecha_creacion = fecha_creacion;
 	}
+	
 
 }
