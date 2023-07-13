@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
+import com.farmacia.uth.data.controller.ProveedorInteractor;
+import com.farmacia.uth.data.controller.ProveedorInteractorImpl;
 import com.farmacia.uth.data.controller.MedicamentoInteractor;
 import com.farmacia.uth.data.controller.MedicamentoInteractorImpl;
 import com.farmacia.uth.data.entity.Medicamento;
@@ -31,6 +33,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.lumo.LumoIcon;
+import com.farmacia.uth.views.proveedores.ProveedorViewModel;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -39,7 +42,7 @@ import java.util.Collection;
 @PageTitle("Medicamentos")
 @Route(value = "medicamentos", layout = MainLayout.class)
 @Uses(Icon.class)
-public class MedicamentosView extends Div implements MedicamentosViewModel {
+public class MedicamentosView extends Div implements MedicamentosViewModel, ProveedorViewModel {
 
 	Grid<Medicamento> gridData = new Grid<>(Medicamento.class, false);
 	
@@ -54,17 +57,23 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
     private Button cancel = new Button("Cancelar");
     private Button save = new Button("Guardar");
     
-    private MedicamentoInteractor controlador;
+    private List<Proveedor> proveedores;
+    private ProveedorInteractor controladorProveedor;
+    private MedicamentoInteractor controladorMedicamento;
 
     public MedicamentosView() {
         addClassName("medicamentos-view");
-        this.controlador = new MedicamentoInteractorImpl(this);
+        this.proveedores = new ArrayList<>();
+        this.controladorProveedor = new ProveedorInteractorImpl(this);
+        this.controladorMedicamento = new MedicamentoInteractorImpl(this);
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
         createFormLayout(splitLayout);
         createGridLayout(splitLayout);
         add(createTitle());
-        this.controlador.consultarMedicamentos();
+        this.controladorProveedor.consultarProveedores();
+        this.controladorMedicamento.consultarMedicamentos();
+        
 //        add(createFormLayout());
 //        add(createButtonLayout());
         add(splitLayout);
@@ -102,10 +111,10 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
     	FormLayout formLayout = new FormLayout(); formLayout.addClassName("form-layout");
     	nombre.setPrefixComponent(LineAwesomeIcon.TABLETS_SOLID.create());
     	descripcion.setPrefixComponent(LineAwesomeIcon.INFO_SOLID.create());
-    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(setProv()); proveedor.setItemLabelGenerator(Proveedor::getNombre_prov); 
+    	proveedor.setPrefixComponent(LumoIcon.USER.create());fechaRegistro.setPrefixComponent(LineAwesomeIcon.CALENDAR_CHECK.create());proveedor.setItems(this.proveedores); proveedor.setItemLabelGenerator(Proveedor::getNombre_prov);  
     	user.setPrefixComponent(LineAwesomeIcon.USER_CIRCLE_SOLID.create());
     	fechaRegistro.setValue(LocalDate.now()); fechaRegistro.setReadOnly(true); fechaVencimiento.setPrefixComponent(LineAwesomeIcon.HOURGLASS_END_SOLID.create());
-    	fechaVencimiento.setHelperText("Selecciones o sngrese la fecha de vencimiento"); 
+    	fechaVencimiento.setHelperText("Selecciones o ingrese la fecha de vencimiento"); 
         formLayout.add(nombre, descripcion, proveedor, user, fechaRegistro, fechaVencimiento);
         containerForm.add(formLayout, createButtonLayout());
         splitLayout.addToPrimary(containerForm);
@@ -114,19 +123,19 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
     private List<Proveedor> setProv() {
     	List<Proveedor> lista = new ArrayList<>();
     	Proveedor prov1 = new Proveedor();
-    	prov1.setId(1);
+    	prov1.setId_prov(1);
     	prov1.setNombre_prov("Farsiman");
     	Proveedor prov2 = new Proveedor();
-    	prov2.setId(2);
+    	prov2.setId_prov(2);
     	prov2.setNombre_prov("QuimiFarma");
     	Proveedor prov3 = new Proveedor();
-    	prov3.setId(3);
+    	prov3.setId_prov(3);
     	prov3.setNombre_prov("Central Quimica de Honduras");
     	Proveedor prov4 = new Proveedor();
-    	prov4.setId(4);
+    	prov4.setId_prov(4);
     	prov4.setNombre_prov("Farmacias del Ahorro");
     	Proveedor prov5 = new Proveedor();
-    	prov5.setId(5);
+    	prov5.setId_prov(5);
     	prov5.setNombre_prov("Pfizher");
     	lista.add(prov1);
     	lista.add(prov2);
@@ -135,7 +144,7 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
     	lista.add(prov5);
     	return lista;
 	}
-
+    
 	private Component createButtonLayout() {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
@@ -187,6 +196,11 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
         }
     }
 
+    @Override
+	public void refrescarGridProveedores(List<Proveedor> proveedor) {
+		this.proveedores = proveedor;
+	}
+    
 	@Override
 	public void refrescarGridMedicamentos(List<Medicamento> medicamento) {
 		Collection<Medicamento> items = medicamento;

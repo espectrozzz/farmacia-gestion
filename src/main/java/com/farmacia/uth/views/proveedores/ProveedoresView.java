@@ -76,7 +76,7 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("id").setAutoWidth(true);
+        grid.addColumn("id_prov").setAutoWidth(true);
         grid.addColumn("nombre_prov").setAutoWidth(true);
         grid.addColumn("direccion_pro").setAutoWidth(true);
         grid.addColumn("telefono").setAutoWidth(true);
@@ -87,12 +87,7 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-                UI.getCurrent().navigate(String.format(PROVEEDOR_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
-            } else {
-                clearForm();
-                UI.getCurrent().navigate(ProveedoresView.class);
-            }
+           selectedDataGrid(event.getValue());
         });
 
         // Consultar proveedores
@@ -122,7 +117,28 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
         });
     }
 
-    @Override
+    private void selectedDataGrid(Proveedor proveedor) {
+    	if(proveedor != null) {
+    		nombre.setValue(proveedor.getNombre_prov());
+    	    direccion.setValue(proveedor.getDireccion_pro());
+    	    telefono.setValue(proveedor.getTelefono());
+    	    correo.setValue(proveedor.getCorreo_prov());
+    	    String [] fechaReg = proveedor.getFecha_creacion().split("T");
+    	    String [] fechaFormat = fechaReg[0].split("-");
+    	    LocalDate fechaCreacion = LocalDate.of(Integer.parseInt(fechaFormat[0]), Integer.parseInt(fechaFormat[1]), Integer.parseInt(fechaFormat[2]));
+    	    usuario.setValue(proveedor.getUsuario());
+    	    creado.setValue(fechaCreacion);
+    	}else {
+    		nombre.setValue("");
+    	    direccion.setValue("");
+    	    telefono.setValue("");
+    	    correo.setValue("");
+    	    usuario.setValue("");
+    	    creado.setValue(LocalDate.now());
+    	}
+	}
+
+	@Override
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> proveedorId = event.getRouteParameters().get(PROVEEDOR_ID).map(Long::parseLong);
         if (proveedorId.isPresent()) {

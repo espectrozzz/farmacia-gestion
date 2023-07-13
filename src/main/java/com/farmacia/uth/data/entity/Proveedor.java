@@ -2,19 +2,18 @@ package com.farmacia.uth.data.entity;
 
 public class Proveedor {
 
-	private int id;
+	private int id_prov;
 	private String nombre_prov;
     private String direccion_pro;
     private String telefono;
     private String correo_prov;
     private String usuario;
     private String fecha_creacion;
-    
-	public int getId() {
-		return id;
+	public int getId_prov() {
+		return id_prov;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setId_prov(int id_prov) {
+		this.id_prov = id_prov;
 	}
 	public String getNombre_prov() {
 		return nombre_prov;
@@ -53,5 +52,6 @@ public class Proveedor {
 		this.fecha_creacion = fecha_creacion;
 	}
     
+	
 	
 }
