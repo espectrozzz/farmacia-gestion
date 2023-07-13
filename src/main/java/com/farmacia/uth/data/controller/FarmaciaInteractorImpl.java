@@ -3,16 +3,16 @@ package com.farmacia.uth.data.controller;
 import java.io.IOException;
 
 import com.farmacia.uth.data.entity.ResponseFarmacias;
-import com.farmacia.uth.data.service.RepositoryInventoryImpl;
+import com.farmacia.uth.data.service.FarmaciaRepositoryImpl;
 
 public class FarmaciaInteractorImpl implements FarmaciaInteractor{
 
-	private RepositoryInventoryImpl modelo;
+	private FarmaciaRepositoryImpl modelo;
 	private FarmaciasViewModel vista;
 	
 	public FarmaciaInteractorImpl(FarmaciasViewModel vista) {
 		super();
-		this.modelo = RepositoryInventoryImpl.getInstance("https://apex.oracle.com/", 6000000L);
+		this.modelo = FarmaciaRepositoryImpl.getInstance("https://apex.oracle.com/", 6000000L);
 		this.vista = vista;
 	}
 
