@@ -1,6 +1,10 @@
 package com.farmacia.uth.views.farmacias;
 
+import com.farmacia.uth.data.controller.FarmaciaInteractor;
+import com.farmacia.uth.data.controller.FarmaciaInteractorImpl;
+import com.farmacia.uth.data.controller.FarmaciasViewModel;
 import com.farmacia.uth.data.entity.Farmacia;
+import com.farmacia.uth.data.entity.Proveedor;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -24,13 +28,16 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
 @PageTitle("Farmacias")
 @Route(value = "farmacias/:farmaciaID?/:action?(edit)", layout = MainLayout.class)
-public class FarmaciasView extends Div implements BeforeEnterObserver {
+public class FarmaciasView extends Div implements BeforeEnterObserver, FarmaciasViewModel {
 
     private final String FARMACIA_ID = "farmaciaID";
     private final String FARMACIA_EDIT_ROUTE_TEMPLATE = "farmacias/%s/edit";
@@ -44,15 +51,19 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
     private TextField telefono;
     private TextField user;
     private DatePicker fechaReg;
+    private List<Farmacia> farmacias;
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
 
 
     private Farmacia farmacia;
+    private FarmaciaInteractor controlador;
 
     public FarmaciasView() {
         addClassNames("farmacias-view");
+        farmacias = new ArrayList<>();
+        this.controlador = new FarmaciaInteractorImpl(this);
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
@@ -86,6 +97,8 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
         // Configure Form
 
         // Bind fields. This is where you'd define e.g. validation rules
+        
+        this.controlador.consultarFarmacias();
 
         cancel.addClickListener(e -> {
             clearForm();
@@ -171,4 +184,12 @@ public class FarmaciasView extends Div implements BeforeEnterObserver {
         this.farmacia = value;
 
     }
+
+	@Override
+	public void refrescarGridFarmacias(List<Farmacia> farmacias) {
+		// TODO Auto-generated method stub
+		Collection<Farmacia> items = farmacias;
+		grid.setItems(items);
+		this.farmacias = farmacias;
+	}
 }
