@@ -3,12 +3,12 @@ package com.farmacia.uth.data.entity;
 public class Proveedor {
 
 	private int id;
-	private String nombre;
-    private String direccion;
+	private String nombre_prov;
+    private String direccion_pro;
     private String telefono;
-    private String correo;
+    private String correo_prov;
     private String usuario;
-    private String creado;
+    private String fecha_creacion;
     
 	public int getId() {
 		return id;
@@ -16,17 +16,17 @@ public class Proveedor {
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getNombre() {
-		return nombre;
+	public String getNombre_prov() {
+		return nombre_prov;
 	}
-	public void setNombre(String nombre_prov) {
-		this.nombre = nombre_prov;
+	public void setNombre_prov(String nombre_prov) {
+		this.nombre_prov = nombre_prov;
 	}
-	public String getDireccion() {
-		return direccion;
+	public String getDireccion_pro() {
+		return direccion_pro;
 	}
-	public void setDireccion(String direccion_pro) {
-		this.direccion = direccion_pro;
+	public void setDireccion_pro(String direccion_pro) {
+		this.direccion_pro = direccion_pro;
 	}
 	public String getTelefono() {
 		return telefono;
@@ -34,11 +34,11 @@ public class Proveedor {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
-	public String getCorreo() {
-		return correo;
+	public String getCorreo_prov() {
+		return correo_prov;
 	}
-	public void setCorreo(String correo_pro) {
-		this.correo = correo_pro;
+	public void setCorreo_prov(String correo_prov) {
+		this.correo_prov = correo_prov;
 	}
 	public String getUsuario() {
 		return usuario;
@@ -46,12 +46,12 @@ public class Proveedor {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
-	public String getCreado() {
-		return creado;
+	public String getFecha_creacion() {
+		return fecha_creacion;
 	}
-	public void setCreado(String fecha_creacion) {
-		this.creado = fecha_creacion;
+	public void setFecha_creacion(String fecha_creacion) {
+		this.fecha_creacion = fecha_creacion;
 	}
-
     
+	
 }
