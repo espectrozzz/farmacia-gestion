@@ -18,6 +18,7 @@ public class MovimientoInteractorImpl implements MovimientoInteractor{
 		try {
 			ResponseMovimientos response = this.modelo.getMovimientos();
 			this.vista.refrescarGridMovimientos(response.getItems());
+			this.vista.getHasMore(response.isHasMore());
 		}catch(IOException e) {
 			e.printStackTrace();
 		}
