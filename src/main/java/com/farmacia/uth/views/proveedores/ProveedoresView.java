@@ -45,7 +45,7 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
     private final String PROVEEDOR_ID = "proveedorID";
     private final String PROVEEDOR_EDIT_ROUTE_TEMPLATE = "proveedores/%s/edit";
 
-    private final Grid<Proveedor> grid = new Grid<>(Proveedor.class, false);
+    public final Grid<Proveedor> grid = new Grid<>(Proveedor.class, false);
 
     private TextField nombre;
     private TextArea direccion;
@@ -84,7 +84,7 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
         grid.addColumn("usuario").setAutoWidth(true);
         grid.addColumn("fecha_creacion").setAutoWidth(true);
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-
+        
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
            selectedDataGrid(event.getValue());
@@ -197,6 +197,9 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
 
     private void populateForm(Proveedor value) {
         this.proveedor = value;
+    }
+    public List<Proveedor> getItem() {
+    	return proveedores;
     }
 
 	@Override

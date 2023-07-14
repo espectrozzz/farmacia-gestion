@@ -71,7 +71,7 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("id").setAutoWidth(true);
+        grid.addColumn("id_far").setAutoWidth(true);
         grid.addColumn("nombre_farm").setAutoWidth(true);
         grid.addColumn("descripcion_farm").setAutoWidth(true);
         grid.addColumn("direccion_farm").setAutoWidth(true);
@@ -83,12 +83,7 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
 
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
-            if (event.getValue() != null) {
-               // UI.getCurrent().navigate(String.format(FARMACIA_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
-            } else {
-                clearForm();
-                UI.getCurrent().navigate(FarmaciasView.class);
-            }
+        	selectedDataGrid(event.getValue());
         });
         
         this.controlador.consultarFarmacias();
@@ -119,6 +114,28 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
             }
         });
     }
+    public void selectedDataGrid(Farmacia farmacia) {
+    	if(farmacia != null) {
+    	    nombre.setValue(farmacia.getNombre_farm());
+    	    descripcion.setValue(farmacia.getDescripcion_farm());
+    	    direccion.setValue(farmacia.getDireccion_farm());
+    	    correo.setValue(farmacia.getCorreo_farm());
+    	    telefono.setValue(farmacia.getTelefono_farm());
+    	    user.setValue(farmacia.getUsuario());
+    	    String [] fecha = farmacia.getFecha_creacion().split("T");
+    	    String [] fechaFormat = fecha[0].split("-");
+    	    LocalDate fechaRegistro = LocalDate.of(Integer.parseInt(fechaFormat[0]), Integer.parseInt(fechaFormat[1]),Integer.parseInt(fechaFormat[2]));
+    	    fechaReg.setValue(fechaRegistro);
+    	}else {
+    	    nombre.setValue("");
+    	    descripcion.setValue("");
+    	    direccion.setValue("");
+    	    correo.setValue("");
+    	    telefono.setValue("");
+    	    user.setValue("");
+    	    fechaReg.setValue(LocalDate.now());
+    	}
+    }
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
@@ -138,7 +155,7 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
         H3 header = new H3("Informacion de Farmacia"); header.addClassName("text-align-center");
         FormLayout formLayout = new FormLayout();
         nombre = new TextField("Nombre"); nombre.setPrefixComponent(LineAwesomeIcon.HOSPITAL_ALT_SOLID.create());
-        descripcion = new TextArea("Descripcion"); descripcion.setPrefixComponent(LineAwesomeIcon.STREET_VIEW_SOLID.create()); descripcion.setHelperText("Ingrese la descripcion visual del estblecimiento");
+        descripcion = new TextArea("Descripcion"); descripcion.setPrefixComponent(LineAwesomeIcon.STREET_VIEW_SOLID.create()); descripcion.setHelperText("Ingrese la descripcion visual del establecimiento");
         direccion = new TextField("Direccion"); direccion.setPrefixComponent(LineAwesomeIcon.MAP_MARKED_ALT_SOLID.create()); direccion.setHelperText("Ingrese la direccion del establecimiento");
         correo = new TextField("Correo"); correo.setPrefixComponent(LineAwesomeIcon.AT_SOLID.create()); correo.setPlaceholder("example@gmail.com");
         Div prefixNumber = new Div(); prefixNumber.setText("+504");

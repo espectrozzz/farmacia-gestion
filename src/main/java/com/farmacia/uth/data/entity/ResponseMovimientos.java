@@ -2,14 +2,14 @@ package com.farmacia.uth.data.entity;
 
 import java.util.List;
 
-public class ResponseInventory {
-	private List<Inventario> items;
+public class ResponseMovimientos {
+	private List<Movimiento> items;
 	private boolean hasMore;
 	private int count;
-	public List<Inventario> getItems() {
+	public List<Movimiento> getItems() {
 		return items;
 	}
-	public void setItems(List<Inventario> items) {
+	public void setItems(List<Movimiento> items) {
 		this.items = items;
 	}
 	public boolean isHasMore() {
@@ -24,6 +24,4 @@ public class ResponseInventory {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
-	
 }

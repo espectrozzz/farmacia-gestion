@@ -85,9 +85,9 @@ public class InventarioView extends Div implements AfterNavigationObserver, Inve
         header.addClassName("header");
         header.setSpacing(false);
         header.getThemeList().add("spacing-s");
-        Span name = new Span(producto.getId_med()+"");
+        Span name = new Span(producto.getNombre_medicamento()+"");
         name.addClassName("name");
-        Span date = new Span(producto.getId_farm()+"");
+        Span date = new Span(producto.getNombre_farmacia()+"");
         date.addClassName("date");
         header.add(name, date);
 
@@ -105,7 +105,7 @@ public class InventarioView extends Div implements AfterNavigationObserver, Inve
         price.addClassName("likes");
         Component stockIcon = LineAwesomeIcon.BOX_SOLID.create();
         stockIcon.addClassName("icon");
-        Span stock = new Span(producto.getStock_ini()+"");
+        Span stock = new Span(producto.getStock_inicial()+"");
         stock.addClassName("comments");
         Component calendarIcon = LineAwesomeIcon.CALENDAR_ALT_SOLID.create();
         calendarIcon.addClassName("icon");
