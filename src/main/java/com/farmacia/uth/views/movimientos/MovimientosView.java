@@ -176,4 +176,10 @@ public class MovimientosView extends Div implements MovimientosViewModel{
 		grid.setItems(items);
 	}
 
+	@Override
+	public void getHasMore(boolean value) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

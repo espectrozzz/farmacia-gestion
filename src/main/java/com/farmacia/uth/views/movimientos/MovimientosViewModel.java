@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface MovimientosViewModel {
 	void refrescarGridMovimientos(List<Movimiento> movimiento);
+	void getHasMore(boolean value);
 }
