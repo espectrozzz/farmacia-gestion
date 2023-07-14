@@ -30,6 +30,7 @@ class ApplicationTest implements ProveedorViewModel{
         	this.controlador = new ProveedorInteractorImpl(this);
         	this.controlador.consultarProveedores();
 			assertTrue(proveedores != null);
+				System.out.println("Test pasado");
 	}
 	@After
 	public void endConf() {System.out.println("Finalizando Test");}
