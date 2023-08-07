@@ -1,6 +1,7 @@
 package com.farmacia.uth.views.medicamentos;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
@@ -38,11 +39,12 @@ import com.farmacia.uth.views.proveedores.ProveedorViewModel;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @PageTitle("Medicamentos")
 @Route(value = "medicamentos", layout = MainLayout.class)
 @Uses(Icon.class)
-public class MedicamentosView extends Div implements MedicamentosViewModel, ProveedorViewModel {
+public class MedicamentosView extends Div implements MedicamentosViewModel {
 
 	Grid<Medicamento> gridData = new Grid<>(Medicamento.class, false);
 	
@@ -58,50 +60,73 @@ public class MedicamentosView extends Div implements MedicamentosViewModel, Prov
     private Button save = new Button("Guardar");
     
     private List<Proveedor> proveedores;
-    private ProveedorInteractor controladorProveedor;
+    private Medicamento medicamento;
     private MedicamentoInteractor controladorMedicamento;
 
     public MedicamentosView() {
         addClassName("medicamentos-view");
         this.proveedores = new ArrayList<>();
-        this.controladorProveedor = new ProveedorInteractorImpl(this);
-        this.controladorProveedor.consultarProveedores();
         this.controladorMedicamento = new MedicamentoInteractorImpl(this);
+        this.controladorMedicamento.consultarMedicamentos();
+        this.controladorMedicamento.consultarProveedor();
         SplitLayout splitLayout = new SplitLayout();
         splitLayout.setOrientation(SplitLayout.Orientation.VERTICAL);
         createFormLayout(splitLayout);
         createGridLayout(splitLayout);
         add(createTitle());
-        this.controladorMedicamento.consultarMedicamentos();
-        
 //        add(createFormLayout());
 //        add(createButtonLayout());
         add(splitLayout);
-        clearForm();
 
         cancel.addClickListener(e -> clearForm());
         save.addClickListener(e -> {
-            clearForm();
+            crearMedicamento();
         });
     }
 
     private void createGridLayout(SplitLayout splitLayout) {
     	Div gridContainer = new Div();
-    	gridData.addColumn("id_med").setAutoWidth(true);
-    	gridData.addColumn("nombre_med").setAutoWidth(true);
-    	gridData.addColumn("descripcion_med").setAutoWidth(true);
-    	gridData.addColumn("usuario").setAutoWidth(true);
-    	gridData.addColumn("fecha_creacion").setAutoWidth(true);
-    	gridData.addColumn("fecha_vencimiento").setAutoWidth(true);
-    	gridData.addColumn("id_prov").setAutoWidth(true);
+    	gridData.addColumn("id_med").setAutoWidth(true).setHeader("ID");
+    	gridData.addColumn("nombre_med").setAutoWidth(true).setHeader("Medicamento");
+    	gridData.addColumn("descripcion_med").setAutoWidth(true).setHeader("Descripcion");
+    	gridData.addColumn("usuario").setAutoWidth(true).setHeader("Usuario");
+    	gridData.addColumn("fecha_creacion").setAutoWidth(true).setHeader("Fecha Creacion");
+    	gridData.addColumn("fecha_vencimiento").setAutoWidth(true).setHeader("Fecha Caducidad");
+    	gridData.addColumn("id_prov").setAutoWidth(true).setHeader("ID Proveedor");
     	gridData.addThemeVariants(GridVariant.LUMO_NO_BORDER);
     	gridContainer.add(gridData);
 		splitLayout.addToSecondary(gridContainer);
 	}
 
-	private void clearForm() {
+    private void crearMedicamento() {
+    	if(medicamento == null) {
+    		this.medicamento = new Medicamento();
+    		this.medicamento.setNombre_med(nombre.getValue());
+    		this.medicamento.setDescripcion_med(descripcion.getValue());
+    		this.medicamento.setUsuario(user.getValue());
+    		Date fechaVen = Date.from(fechaVencimiento.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+    		this.medicamento.setFecha_vencimiento(fechaVen);
+    		this.medicamento.setId_prov(proveedor.getValue().getId_prov());
+    		this.controladorMedicamento.crearMedicamento(medicamento);
+            this.controladorMedicamento.consultarMedicamentos();
+    	}else {
+    		
+    	}
     }
-
+    
+	private void clearForm() {
+		nombre.setValue(null);
+		descripcion.setValue(null);
+		user.setValue(null);
+		fechaVencimiento.setValue(null);
+		proveedor.clear();
+		populateForm(null);
+    }
+	
+	private void populateForm(Medicamento value) {
+		this.medicamento = value;
+	}
+	
     private Component createTitle() {
         return new H3("Detalles del Medicamento");
     }
@@ -119,31 +144,6 @@ public class MedicamentosView extends Div implements MedicamentosViewModel, Prov
         containerForm.add(formLayout, createButtonLayout());
         splitLayout.addToPrimary(containerForm);
     }
-
-    private List<Proveedor> setProv() {
-    	List<Proveedor> lista = new ArrayList<>();
-    	Proveedor prov1 = new Proveedor();
-    	prov1.setId_prov(1);
-    	prov1.setNombre_prov("Farsiman");
-    	Proveedor prov2 = new Proveedor();
-    	prov2.setId_prov(2);
-    	prov2.setNombre_prov("QuimiFarma");
-    	Proveedor prov3 = new Proveedor();
-    	prov3.setId_prov(3);
-    	prov3.setNombre_prov("Central Quimica de Honduras");
-    	Proveedor prov4 = new Proveedor();
-    	prov4.setId_prov(4);
-    	prov4.setNombre_prov("Farmacias del Ahorro");
-    	Proveedor prov5 = new Proveedor();
-    	prov5.setId_prov(5);
-    	prov5.setNombre_prov("Pfizher");
-    	lista.add(prov1);
-    	lista.add(prov2);
-    	lista.add(prov3);
-    	lista.add(prov4);
-    	lista.add(prov5);
-    	return lista;
-	}
     
 	private Component createButtonLayout() {
         HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -196,16 +196,26 @@ public class MedicamentosView extends Div implements MedicamentosViewModel, Prov
         }
     }
 
-    @Override
-	public void refrescarGridProveedores(List<Proveedor> proveedor) {
-		this.proveedores = proveedor;
-	}
-    
 	@Override
 	public void refrescarGridMedicamentos(List<Medicamento> medicamento) {
 		Collection<Medicamento> items = medicamento;
 		gridData.setItems(items);
 		this.medicamentos = medicamento;
+	}
+
+	@Override
+	public void showMessageMed(boolean value) {
+		String mensaje = "Empleado Creado con Exito :D";
+		if(!value) {
+			mensaje = "Error al crear empleado >:c";
+		}
+		Notification.show(mensaje);
+	}
+
+	@Override
+	public void chargeDataProveedores(List<Proveedor> proveedor) {
+		// TODO Auto-generated method stub
+		this.proveedores = proveedor;
 	}
 
 }

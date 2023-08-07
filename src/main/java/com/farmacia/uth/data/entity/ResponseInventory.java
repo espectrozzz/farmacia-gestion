@@ -24,6 +24,4 @@ public class ResponseInventory {
 	public void setCount(int count) {
 		this.count = count;
 	}
-	
-	
 }

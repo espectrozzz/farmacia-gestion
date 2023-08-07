@@ -7,7 +7,7 @@ public class Inventario {
 	private String nombre_farmacia;
 	private int precio_venta;
 	private int stock_inicial;
-	private String usuario;
+	private String descripcion_med;
 	private String fecha_creacion;
 	public int getId_prod() {
 		return id_prod;
@@ -39,11 +39,12 @@ public class Inventario {
 	public void setStock_inicial(int stock_inicial) {
 		this.stock_inicial = stock_inicial;
 	}
-	public String getUsuario() {
-		return usuario;
+
+	public String getDescripcion_med() {
+		return descripcion_med;
 	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setDescripcion_med(String descripcion_med) {
+		this.descripcion_med = descripcion_med;
 	}
 	public String getFecha_creacion() {
 		return fecha_creacion;

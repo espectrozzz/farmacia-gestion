@@ -1,5 +1,6 @@
 package com.farmacia.uth.data.entity;
 
+import java.util.Date;
 
 public class Farmacia {
 
@@ -10,7 +11,7 @@ public class Farmacia {
     private String correo_farm;
     private String telefono_farm;
     private String usuario;
-    private String fecha_creacion;
+    private Date fecha_creacion;
 
 
 	public int getId_far() {
@@ -55,12 +56,11 @@ public class Farmacia {
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
-	public String getFecha_creacion() {
+	public Date getFecha_creacion() {
 		return fecha_creacion;
 	}
-	public void setFecha_creacion(String fecha_creacion) {
+	public void setFecha_creacion(Date fecha_creacion) {
 		this.fecha_creacion = fecha_creacion;
 	}
 	
-
 }
