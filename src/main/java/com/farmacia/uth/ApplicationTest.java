@@ -108,5 +108,25 @@ class ApplicationTest implements ProveedorViewModel, FarmaciasViewModel, Medicam
 	public void getHasMore(boolean value) {
 		this.hasMore = value;
 	}
+	@Override
+	public void showMessageMed(boolean value) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void chargeDataProveedores(List<Proveedor> proveedor) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void showMessageInsert(boolean value) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void showMsgCreate(boolean value) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

@@ -12,14 +12,16 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.notification.Notification.Position;
-import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.component.confirmdialog.ConfirmDialog;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -30,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
@@ -64,76 +68,59 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
         this.controlador = new FarmaciaInteractorImpl(this);
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
-
         createGridLayout(splitLayout);
         createEditorLayout(splitLayout);
-
         add(splitLayout);
-
-        // Configure Grid
-        grid.addColumn("id_far").setAutoWidth(true);
-        grid.addColumn("nombre_farm").setAutoWidth(true);
-        grid.addColumn("descripcion_farm").setAutoWidth(true);
-        grid.addColumn("direccion_farm").setAutoWidth(true);
-        grid.addColumn("correo_farm").setAutoWidth(true);
-        grid.addColumn("telefono_farm").setAutoWidth(true);
-        grid.addColumn("usuario").setAutoWidth(true);
-        grid.addColumn("fecha_creacion").setAutoWidth(true);
-        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
-
-        // when a row is selected or deselected, populate form
-        grid.asSingleSelect().addValueChangeListener(event -> {
-        	selectedDataGrid(event.getValue());
-        });
-        
         this.controlador.consultarFarmacias();
-
-        // Configure Form
-
-        // Bind fields. This is where you'd define e.g. validation rules
-
         cancel.addClickListener(e -> {
             clearForm();
             refreshGrid();
         });
-
         save.addClickListener(e -> {
-            try {
-                if (this.farmacia == null) {
-                    this.farmacia = new Farmacia();
-                }
-                clearForm();
-                refreshGrid();
-                Notification.show("Data updated");
-                UI.getCurrent().navigate(FarmaciasView.class);
-            } catch (ObjectOptimisticLockingFailureException exception) {
-                Notification n = Notification.show(
-                        "Error updating the data. Somebody else has updated the record while you were making changes.");
-                n.setPosition(Position.MIDDLE);
-                n.addThemeVariants(NotificationVariant.LUMO_ERROR);
-            }
+        	createFarm();
         });
     }
+
+    public void createFarm() {
+    	if(this.farmacia == null) {
+    		this.farmacia = new Farmacia();
+    		this.farmacia.setNombre_farm(nombre.getValue().toString());
+    		this.farmacia.setDescripcion_farm(descripcion.getValue().toString());
+    		this.farmacia.setDireccion_farm(direccion.getValue().toString());
+    		this.farmacia.setCorreo_farm(correo.getValue().toString());
+    		this.farmacia.setTelefono_farm(telefono.getValue().toString());
+    		this.farmacia.setUsuario(user.getValue().toString());
+    		this.controlador.crearFarmacia(farmacia);
+    		refreshGrid();
+    		clearForm();
+    	}else {
+    		this.farmacia.setNombre_farm(nombre.getValue().toString());
+    		this.farmacia.setDescripcion_farm(descripcion.getValue().toString());
+    		this.farmacia.setDireccion_farm(direccion.getValue().toString());
+    		this.farmacia.setCorreo_farm(correo.getValue().toString());
+    		this.farmacia.setTelefono_farm(telefono.getValue().toString());
+    		this.farmacia.setUsuario(user.getValue().toString());
+    		this.controlador.updateFarmacia(this.farmacia);
+    		refreshGrid();
+    		clearForm();
+    	}
+    }
+    
     public void selectedDataGrid(Farmacia farmacia) {
     	if(farmacia != null) {
-    	    nombre.setValue(farmacia.getNombre_farm());
-    	    descripcion.setValue(farmacia.getDescripcion_farm());
-    	    direccion.setValue(farmacia.getDireccion_farm());
-    	    correo.setValue(farmacia.getCorreo_farm());
-    	    telefono.setValue(farmacia.getTelefono_farm());
-    	    user.setValue(farmacia.getUsuario());
-    	    String [] fecha = farmacia.getFecha_creacion().split("T");
-    	    String [] fechaFormat = fecha[0].split("-");
-    	    LocalDate fechaRegistro = LocalDate.of(Integer.parseInt(fechaFormat[0]), Integer.parseInt(fechaFormat[1]),Integer.parseInt(fechaFormat[2]));
+    		populateForm(farmacia);
+    		nombre.setValue(this.farmacia.getNombre_farm()+"");
+    	    descripcion.setValue(this.farmacia.getDescripcion_farm()+"");
+    	    direccion.setValue(this.farmacia.getDireccion_farm()+"");
+    	    correo.setValue(this.farmacia.getCorreo_farm()+"");
+    	    telefono.setValue(this.farmacia.getTelefono_farm()+"");
+    	    user.setValue(this.farmacia.getUsuario()+"");
+    	    DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+    	    String fecha = formatDate.format(farmacia.getFecha_creacion());
+    	    LocalDate fechaRegistro = LocalDate.parse(fecha);
     	    fechaReg.setValue(fechaRegistro);
     	}else {
-    	    nombre.setValue("");
-    	    descripcion.setValue("");
-    	    direccion.setValue("");
-    	    correo.setValue("");
-    	    telefono.setValue("");
-    	    user.setValue("");
-    	    fechaReg.setValue(LocalDate.now());
+    		clearForm();
     	}
     }
 
@@ -181,16 +168,57 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
     private void createGridLayout(SplitLayout splitLayout) {
         Div wrapper = new Div();
         wrapper.setClassName("grid-wrapper");
+        // Configure Grid
+        grid.addColumn("id_far").setAutoWidth(true).setHeader("ID");
+        grid.addColumn("nombre_farm").setAutoWidth(true).setHeader("Farmacia");
+        grid.addColumn("descripcion_farm").setAutoWidth(true).setHeader("Descripcion");
+        grid.addColumn("direccion_farm").setAutoWidth(true).setHeader("Direccion");
+        grid.addColumn("correo_farm").setAutoWidth(true).setHeader("Correo Electronico");
+        grid.addColumn("telefono_farm").setAutoWidth(true).setHeader("Telefono");
+        grid.addColumn("usuario").setAutoWidth(true).setHeader("Usuario");
+        grid.addColumn("fecha_creacion").setAutoWidth(true).setHeader("Fecha Registro");
+        grid.addColumn(new ComponentRenderer<>(Button::new, (btn, farmacia) -> {
+        	btn.addThemeVariants(ButtonVariant.LUMO_ICON,
+                    ButtonVariant.LUMO_ERROR,
+                    ButtonVariant.LUMO_TERTIARY);
+        	btn.addClickListener(e -> {
+        		ConfirmDialog dialog = new ConfirmDialog();
+        		dialog.setHeader("¿Desea eliminar este registro?");
+        		dialog.setText("Al aceptar, el registro se eliminará por completo, por lo que no sea podrá recuperar.");
+        		dialog.setCancelText("Cancelar");
+        		dialog.setCancelable(true);
+        		dialog.setConfirmText("Borrar");
+        		dialog.setConfirmButtonTheme("error primary");
+        		dialog.addConfirmListener(event -> {
+            		this.controlador.deleteFarmacia(farmacia.getId_far());
+            		refreshGrid();
+        		});
+        		dialog.open();
+        		});
+        	btn.setIcon(new Icon(VaadinIcon.TRASH));
+        })).setHeader("Manage");
+        grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
+
+        // when a row is selected or deselected, populate form
+        grid.asSingleSelect().addValueChangeListener(event -> {
+        	selectedDataGrid(event.getValue());
+        });
         splitLayout.addToPrimary(wrapper);
         wrapper.add(grid);
     }
 
     private void refreshGrid() {
-        grid.select(null);
-        grid.getDataProvider().refreshAll();
+    	this.controlador.consultarFarmacias();
     }
 
     private void clearForm() {
+	    nombre.setValue("");
+	    descripcion.setValue("");
+	    direccion.setValue("");
+	    correo.setValue("");
+	    telefono.setValue("");
+	    user.setValue("");
+	    fechaReg.setValue(LocalDate.now());
         populateForm(null);
     }
 
@@ -205,5 +233,31 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
 		grid.setItems(items);
 		this.farmacias = farmacia;
 		
+	}
+	@Override
+	public void showMessageInsert(boolean value) {
+		String msg = "Farmacia creado correctamente :3";
+		if(!value) {
+			msg = "Error al intentar crear. :c";
+		}
+		Notification.show(msg);
+	}
+
+	@Override
+	public void showMessageUpdate(boolean value) {
+		String msg = "Registro actualizado correctamente.";
+		if(!value) {
+			msg = "Error al intentar actualizar. :c";
+		}
+		Notification.show(msg);		
+	}
+
+	@Override
+	public void showMessageDelete(boolean value) {
+		String msg = "Registro eliminado correctamente";
+		if(!value) {
+			msg = "Error al intentar eliminar registro. :c";
+		}
+		Notification.show(msg);
 	}
 }

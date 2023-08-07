@@ -24,7 +24,7 @@ public class RepositoryClient {
 		retrofit = new Retrofit.Builder()
 				.client(client)
 				.baseUrl(url)
-				.addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSz").create()))
+				.addConverterFactory(GsonConverterFactory.create(new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").create()))
 				.build();
 	}
 	public RepositoryInventory getDataBaseInventory() {

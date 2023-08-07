@@ -5,9 +5,15 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 import com.farmacia.uth.data.entity.ResponseMedicamentos;
+import com.farmacia.uth.data.entity.Farmacia;
+import com.farmacia.uth.data.entity.Medicamento;
+import com.farmacia.uth.data.entity.Proveedor;
 import com.farmacia.uth.data.entity.ResponseFarmacias;
 import com.farmacia.uth.data.entity.ResponseInventory;
 import com.farmacia.uth.data.entity.ResponseProveedores;
+
+import okhttp3.ResponseBody;
+
 import com.farmacia.uth.data.entity.ResponseMovimientos;
 
 public class RepositoryInventoryImpl {
@@ -38,6 +44,7 @@ public class RepositoryInventoryImpl {
 		}
 	}
 	
+	//IMPLEMENTACION METODOS PROVEEDORES
 	public ResponseProveedores getProveedores() throws IOException {
 		Call<ResponseProveedores> call = client.getDataBaseInventory().obtenerProveedores();
 		Response<ResponseProveedores> response = call.execute();
@@ -47,7 +54,27 @@ public class RepositoryInventoryImpl {
 			return null;
 		}
 	}
-
+	
+	public boolean createProveedor(Proveedor nuevo) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().createProveedor(nuevo);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
+	public boolean updateProveedor(Proveedor actualizar) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().updateProveedor(actualizar);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
+	public boolean deleteProveedor(int value) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().deleteProveedor(value);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	//FIN IMPLEMENTACION METODOS PROVEEDORES
+	
+	//IMPLEMENTACION METODOS FARMACIA
 	public ResponseFarmacias getFarmacias() throws IOException {
 		Call<ResponseFarmacias> call = client.getDataBaseInventory().obtenerFamarcias();
 		Response<ResponseFarmacias> response = call.execute();
@@ -57,7 +84,26 @@ public class RepositoryInventoryImpl {
 			return null;
 		}
 	}
+	
+	public boolean insertFarmacia(Farmacia nuevo) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().crearFarmacia(nuevo);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
+	public boolean updateFarmacia(Farmacia value) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().updateFarmacia(value);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
 
+	public boolean deleteFarmacia(int value) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().deleteFarmacia(value);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	//FIN IMPLEMENTACION METODOS FARMACIA
+	
 	public ResponseMedicamentos getMedicamentos() throws IOException {
 		Call<ResponseMedicamentos> call = client.getDataBaseInventory().obtenerMedicamentos();
 		Response<ResponseMedicamentos> response = call.execute();
@@ -67,6 +113,13 @@ public class RepositoryInventoryImpl {
 			return null;
 		}
 	}
+	
+	public boolean insertMedicamento(Medicamento nuevo) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().createMedicamento(nuevo);
+		Response<ResponseBody> response = call.execute(); 		
+		return response.isSuccessful();
+	}
+
 	
 	public ResponseMovimientos getMovimientos() throws IOException {
 		Call<ResponseMovimientos> call = client.getDataBaseInventory().obtenerMovimientos();
