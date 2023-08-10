@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte_Medicamentos" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="77a18261-9bbd-4a64-9d58-28860731bf6c">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="Id" class="java.lang.String"/>
+	<field name="Medicamento" class="java.lang.String"/>
+	<field name="Descripcion" class="java.lang.String"/>
+	<field name="Usuario" class="java.lang.String"/>
+	<field name="FechaCreacion" class="java.lang.String"/>
+	<field name="FechaCaducidad" class="java.lang.String"/>
+	<field name="IdProveedor" class="java.lang.String"/>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#109126" uuid="01dcd4bb-ae1c-445a-a6f8-e10ac72a9753"/>
+				<staticText>
+					<reportElement x="0" y="20" width="595" height="50" forecolor="#0A0A0A" uuid="eab98a07-255a-478c-95bd-6be806447449"/>
+					<textElement textAlignment="Center">
+						<font fontName="Algerian" size="37" isBold="true" isItalic="false" isUnderline="false"/>
+					</textElement>
+					<text><![CDATA[REPORTE DE MEDICAMENTOS]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="35">
+			<line>
+				<reportElement x="-20" y="20" width="595" height="1" forecolor="#666666" uuid="c1534c16-a1b0-44c0-8f64-741b64313569"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="0" width="30" height="20" uuid="7287a700-c104-49e6-a553-44f54cb2bdda"/>
+				<textElement verticalAlignment="Middle" markup="">
+					<font fontName="&#xD;&#xA;Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="0" width="90" height="20" uuid="d876665f-7392-4e34-b966-587bb4dd17dd"/>
+				<textElement verticalAlignment="Middle" markup="">
+					<font fontName="&#xD;&#xA;Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Medicamento]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="0" width="79" height="20" uuid="cacf35d2-6167-4c3c-8676-e7b6df239ed1"/>
+				<textElement verticalAlignment="Middle" markup="">
+					<font fontName="&#xD;&#xA;Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripcion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="199" y="0" width="61" height="20" uuid="c430a7d6-bc3c-493d-9159-47ab3389a2e6"/>
+				<textElement verticalAlignment="Middle" markup="">
+					<font fontName="&#xD;&#xA;Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Usuario]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="0" width="99" height="20" uuid="e2b79985-7a3a-4b08-bcf3-88ef94406cf7"/>
+				<textElement verticalAlignment="Middle" markup="">
+					<font fontName="&#xD;&#xA;Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Creacion]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="366" y="0" width="110" height="20" uuid="19fb4366-9c24-44f0-ab81-c7fd8200912b"/>
+				<textElement verticalAlignment="Middle" markup="">
+					<font fontName="&#xD;&#xA;Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Caducidad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="476" y="0" width="79" height="20" uuid="d3299ae4-887f-4a12-b0cc-23826dbcf5f1"/>
+				<textElement verticalAlignment="Middle" markup="">
+					<font fontName="&#xD;&#xA;Times New Roman" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Id Proveedor]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24">
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="19" width="555" height="1" uuid="4a8ba6a9-e3da-45ea-bac6-ebd13879bc32"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="1" width="30" height="18" uuid="154a001b-fa9e-45ed-9643-e27a562c4980"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Id}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="30" y="1" width="90" height="18" uuid="ddb82eb6-4623-4a0b-a80d-9dea838cadeb"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Medicamento}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="120" y="1" width="78" height="18" uuid="d2d02bfe-9c75-40de-abba-b85e28807e27"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Descripcion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="198" y="1" width="61" height="18" uuid="21ad25f5-5f46-45a1-84c3-8fa654c2e008"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{Usuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="260" y="1" width="98" height="18" uuid="5943faac-82da-4826-99e3-584be73cec02"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FechaCreacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="359" y="1" width="116" height="18" uuid="f2c90e9f-8260-4f23-8d6e-9bb677eaff10"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{FechaCaducidad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="476" y="1" width="78" height="18" uuid="1f79c1c8-14fd-46ee-8567-7117c9ca1818"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{IdProveedor}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="faa6c97b-bea5-432e-a808-0087beda9a56"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="da8e6616-47ef-4595-a50e-0429352bd628"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="bec242c4-8f0b-4317-ab15-96ecf0590207"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
