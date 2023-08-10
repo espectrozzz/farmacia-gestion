@@ -4,7 +4,18 @@
   align-items: end;
   gap: 0 var(--lumo-space-l);
 }
+.movimientos-view vaadin-combo-box{
+	margin-right: 15px;
+	width: 25%;
+}
 
+.movimientos-view vaadin-number-field{
+	margin-right: 10px;
+}
+
+.movimientos-view vaadin-text-field{
+	margin-right: 10px;
+}
 .movimientos-view .filter-layout .double-width {
   grid-column-end: span 2;
 }
@@ -22,7 +33,7 @@
 }
 
 .movimientos-view .filter-layout vaadin-combo-box {
-  --vaadin-field-default-width: auto;
+  --vaadin-field-default-width: 6em;
 }
 
 /* Mobile filters */

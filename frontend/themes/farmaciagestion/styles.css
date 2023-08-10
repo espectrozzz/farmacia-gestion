@@ -4,6 +4,7 @@
 @import url('./views/farmacias-view.css');
 @import url('./views/productos-view.css');
 @import url('./views/movimientos-view.css');
+@import url('./views/inventario-view.css');
 @import url('@fontsource/open-sans/index.css');    html {
       --lumo-border-radius-s: 1px;
       --lumo-border-radius-m: 2px;

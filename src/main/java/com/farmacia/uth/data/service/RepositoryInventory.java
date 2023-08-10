@@ -16,9 +16,12 @@ import com.farmacia.uth.data.entity.ResponseInventory;
 import com.farmacia.uth.data.entity.Inventario;
 import com.farmacia.uth.data.entity.ResponseMedicamentos;
 import com.farmacia.uth.data.entity.Medicamento;
+import com.farmacia.uth.data.entity.Movimiento;
+import com.farmacia.uth.data.entity.Productos;
 import com.farmacia.uth.data.entity.ResponseProveedores;
 import com.farmacia.uth.data.entity.Proveedor;
 import com.farmacia.uth.data.entity.ResponseMovimientos;
+import com.farmacia.uth.data.entity.ResponseProductos;
 
 public interface RepositoryInventory {
 	//Inicio Methds API Inventory
@@ -120,6 +123,7 @@ public interface RepositoryInventory {
 	//FIN MEDICAMENTOS
 	
 	
+	//INICIO MOVIMIENTOS
 	@Headers({
 		"Content-Type: application/json",
 		"Accept-Charset: utf-8",
@@ -128,4 +132,31 @@ public interface RepositoryInventory {
 	
 	@GET("pls/apex/mtech_paii_20232/gestionalmacenes/movimientos")
 	Call<ResponseMovimientos> obtenerMovimientos();	
+	
+	@Headers({
+		"Content-Type: application/json",
+		"Accept-Charset: utf-8",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@POST("pls/apex/mtech_paii_20232/gestionalmacenes/movimientos")
+	Call<ResponseBody> createMovimiento(@Body Movimiento nuevo);
+	//FIN MOVIMIENTOS
+	
+	//INICIO PRODUCTOS
+	@Headers({
+		"Content-Type: application/json",
+		"Accept-Charset: utf-8",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@GET("pls/apex/mtech_paii_20232/gestionalmacenes/productos")
+	Call<ResponseProductos> obtenerProductos();
+	
+	@Headers({
+		"Content-Type: application/json",
+		"Accept-Charset: utf-8",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@POST("pls/apex/mtech_paii_20232/gestionalmacenes/productos")
+	Call<ResponseBody> crearProducto(@Body Productos producto);
+	//FIN PRODUCTOS
 }

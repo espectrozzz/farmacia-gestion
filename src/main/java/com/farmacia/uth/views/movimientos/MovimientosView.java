@@ -3,6 +3,7 @@ package com.farmacia.uth.views.movimientos;
 import com.farmacia.uth.data.controller.MovimientoInteractor;
 import com.farmacia.uth.data.controller.MovimientoInteractorImpl;
 import com.farmacia.uth.data.entity.Movimiento;
+import com.farmacia.uth.data.entity.Productos;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -10,6 +11,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.textfield.NumberField;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.grid.Grid;
@@ -17,6 +19,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -31,6 +34,8 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Expression;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.data.domain.PageRequest;
@@ -43,20 +48,29 @@ import org.vaadin.lineawesome.LineAwesomeIcon;
 public class MovimientosView extends Div implements MovimientosViewModel{
 
     private Grid<Movimiento> grid = new Grid<>(Movimiento.class, false);
-
-    private Filters filters;
+    private NumberField cantidad = new NumberField("Cantidad");
+    private TextField usuario = new TextField("Usuario");
+    private DatePicker startDate = new DatePicker("Fecha");
+    private DatePicker endDate = new DatePicker();
+    private ComboBox<String> cboMovimiento = new ComboBox<>("Movimiento");
+    private ComboBox<Productos> cboProductos = new ComboBox<>("Productos"); 
+    
     private MovimientoInteractor controlador;
+    private List<Productos> productos;
+    private List<Movimiento> movimientos;
+    private Movimiento movimiento;
 
     public MovimientosView() {
         setSizeFull();
         addClassNames("movimientos-view");
         this.controlador = new MovimientoInteractorImpl(this);
-        filters = new Filters(() -> refreshGrid());
-        VerticalLayout layout = new VerticalLayout(createMobileFilters(), filters, createGrid());
+        this.controlador.consultarMovimientos();
+        this.controlador.consultarProductos();
+        VerticalLayout layout = new VerticalLayout(createMobileFilters(), createForm(), createGrid());
         layout.setSizeFull();
         layout.setPadding(false);
         layout.setSpacing(false);
-        this.controlador.consultarMovimientos();
+
         add(layout);
     }
 
@@ -72,94 +86,54 @@ public class MovimientosView extends Div implements MovimientosViewModel{
         Span filtersHeading = new Span("Filters");
         mobileFilters.add(mobileIcon, filtersHeading);
         mobileFilters.setFlexGrow(1, filtersHeading);
-        mobileFilters.addClickListener(e -> {
-            if (filters.getClassNames().contains("visible")) {
-                filters.removeClassName("visible");
-                mobileIcon.getElement().setAttribute("icon", "lumo:plus");
-            } else {
-                filters.addClassName("visible");
-                mobileIcon.getElement().setAttribute("icon", "lumo:minus");
-            }
-        });
         return mobileFilters;
     }
 
-    public static class Filters extends Div implements Specification<Movimiento> {
+    public Div createForm() {
+    	Div container = new Div();
+        setWidthFull();
+        addClassName("filter-layout");
+        addClassNames(LumoUtility.Padding.Horizontal.LARGE, LumoUtility.Padding.Vertical.MEDIUM,
+                LumoUtility.BoxSizing.BORDER);
+        cantidad.setPlaceholder("1"); cantidad.setPrefixComponent(LineAwesomeIcon.BOXES_SOLID.create());
+        usuario.setPlaceholder("Grupo 4"); usuario.setPrefixComponent(LineAwesomeIcon.USER_ALT_SOLID.create());
+        cboMovimiento.setItems("ingreso", "egreso"); cboMovimiento.setPrefixComponent(LineAwesomeIcon.TRUCK_MOVING_SOLID.create());
+        cboProductos.setItems(this.productos); cboProductos.setItemLabelGenerator(Productos::getNombre_med);
+        startDate.setValue(LocalDate.now()); startDate.setReadOnly(true);
+        // Action buttons
+        Button resetBtn = new Button("Reiniciar");
+        resetBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        resetBtn.addClickListener(e -> {
+            usuario.clear();
+            cantidad.clear();
+            startDate.clear();
+            cboMovimiento.clear();
+        });
+        Button searchBtn = new Button("Guardar");
+        searchBtn.addClickListener(event -> {
+            usuario.clear();
+            cantidad.clear();
+            startDate.clear();
+            cboMovimiento.clear();
+        	createMovimiento();
+        });
+        searchBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-        private final TextField id_movimiento = new TextField("Id Movimiento");
-        private final TextField id_producto = new TextField("Id Producto");
-        private final DatePicker startDate = new DatePicker("Fecha");
-        private final DatePicker endDate = new DatePicker();
-        private final ComboBox<String> movimiento = new ComboBox<>("Movimiento");
+        Div actions = new Div(resetBtn, searchBtn);
+        actions.addClassName(LumoUtility.Gap.SMALL);
+        actions.addClassName("actions");
 
-        public Filters(Runnable onSearch) {
-
-            setWidthFull();
-            addClassName("filter-layout");
-            addClassNames(LumoUtility.Padding.Horizontal.LARGE, LumoUtility.Padding.Vertical.MEDIUM,
-                    LumoUtility.BoxSizing.BORDER);
-            id_movimiento.setPlaceholder("1"); id_movimiento.setPrefixComponent(LineAwesomeIcon.FILE_ALT_SOLID.create());
-            id_producto.setPlaceholder("1"); id_producto.setPrefixComponent(LineAwesomeIcon.BOXES_SOLID.create());
-            movimiento.setItems("ingreso", "egreso"); movimiento.setPrefixComponent(LineAwesomeIcon.TRUCK_MOVING_SOLID.create());
-
-            // Action buttons
-            Button resetBtn = new Button("Reiniciar");
-            resetBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
-            resetBtn.addClickListener(e -> {
-                id_movimiento.clear();
-                id_producto.clear();
-                startDate.clear();
-                endDate.clear();
-                movimiento.clear();
-            });
-            Button searchBtn = new Button("Buscar");
-            searchBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-            searchBtn.addClickListener(e -> onSearch.run());
-
-            Div actions = new Div(resetBtn, searchBtn);
-            actions.addClassName(LumoUtility.Gap.SMALL);
-            actions.addClassName("actions");
-
-            add(id_movimiento, id_producto, createDateRangeFilter(), movimiento, actions);
-        }
-
-        private Component createDateRangeFilter() {
-            startDate.setPlaceholder("Desde");
-
-            endDate.setPlaceholder("Hasta");
-
-            // For screen readers
-            setAriaLabel(startDate, "From date");
-            setAriaLabel(endDate, "To date");
-
-            FlexLayout dateRangeComponent = new FlexLayout(startDate, new Text(" – "), endDate);
-            dateRangeComponent.setAlignItems(FlexComponent.Alignment.BASELINE);
-            dateRangeComponent.addClassName(LumoUtility.Gap.XSMALL);
-
-            return dateRangeComponent;
-        }
-
-        private void setAriaLabel(DatePicker datePicker, String label) {
-            datePicker.getElement().executeJs("const input = this.inputElement;" //
-                    + "input.setAttribute('aria-label', $0);" //
-                    + "input.removeAttribute('aria-labelledby');", label);
-        }
-
-        @Override
-        public Predicate toPredicate(Root<Movimiento> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-            List<Predicate> predicates = new ArrayList<>();
-            return criteriaBuilder.and(predicates.toArray(Predicate[]::new));
-        }
-
+        add(cboMovimiento, cboProductos, cantidad, usuario, startDate, actions);
+        return container;
     }
-
+    
     private Component createGrid() {
-        grid.addColumn("id_mov").setAutoWidth(true);
-        grid.addColumn("tipo_mov").setAutoWidth(true);
-        grid.addColumn("cantidad").setAutoWidth(true);
-        grid.addColumn("fecha_mov").setAutoWidth(true);
-        grid.addColumn("usuario").setAutoWidth(true);
-        grid.addColumn("id_prod").setAutoWidth(true);
+        grid.addColumn("id_mov").setAutoWidth(true).setHeader("Id Movimiento");
+        grid.addColumn("tipo_mov").setAutoWidth(true).setHeader("Tipo Movimiento");
+        grid.addColumn("cantidad").setAutoWidth(true).setHeader("Cantidad");
+        grid.addColumn("fecha_mov").setAutoWidth(true).setHeader("Fecha Movimiento");
+        grid.addColumn("usuario").setAutoWidth(true).setHeader("Usuario");
+        grid.addColumn("id_prod").setAutoWidth(true).setHeader("Id Producto");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.addClassNames(LumoUtility.Border.TOP, LumoUtility.BorderColor.CONTRAST_10);
 
@@ -169,16 +143,45 @@ public class MovimientosView extends Div implements MovimientosViewModel{
     private void refreshGrid() {
         grid.getDataProvider().refreshAll();
     }
+    
+    private void createMovimiento() {
+    	if(this.movimiento == null) {
+    		this.movimiento = new Movimiento();
+    		this.movimiento.setTipo_mov(this.cboMovimiento.getValue());
+    		this.movimiento.setId_prod(this.cboProductos.getValue().getId_prod());
+    		this.movimiento.setCantidad(this.cantidad.getValue().intValue());
+    		this.movimiento.setUsuario(this.usuario.getValue());
+    		this.controlador.insertMovimiento(this.movimiento);
+    		this.controlador.consultarMovimientos();
+    	}
+    }
 
+    public void populateForm(Movimiento value) {
+    	this.movimiento = value;
+    }
+    
 	@Override
 	public void refrescarGridMovimientos(List<Movimiento> movimiento) {
-		List<Movimiento> items = movimiento;
-		grid.setItems(items);
+		this.movimientos = movimiento;
+		grid.setItems(this.movimientos);
 	}
 
 	@Override
 	public void getHasMore(boolean value) {
-		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void consultarProductos(List<Productos> producto) {
+		this.productos = producto;
+	}
+
+	@Override
+	public void showMsgInsert(boolean value) {
+		String msg = "Registro creado correctamente";
+		if(!value) {
+			msg = "Error al intentar crear registro";
+		}
+		Notification.show(msg);
 		
 	}
 
