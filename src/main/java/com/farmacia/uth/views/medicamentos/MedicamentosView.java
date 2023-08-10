@@ -115,9 +115,9 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
     }
     
 	private void clearForm() {
-		nombre.setValue(null);
-		descripcion.setValue(null);
-		user.setValue(null);
+		nombre.setValue("");
+		descripcion.setValue("");
+		user.setValue("");
 		fechaVencimiento.setValue(null);
 		proveedor.clear();
 		populateForm(null);

@@ -7,6 +7,8 @@ import retrofit2.Response;
 import com.farmacia.uth.data.entity.ResponseMedicamentos;
 import com.farmacia.uth.data.entity.Farmacia;
 import com.farmacia.uth.data.entity.Medicamento;
+import com.farmacia.uth.data.entity.Movimiento;
+import com.farmacia.uth.data.entity.Productos;
 import com.farmacia.uth.data.entity.Proveedor;
 import com.farmacia.uth.data.entity.ResponseFarmacias;
 import com.farmacia.uth.data.entity.ResponseInventory;
@@ -15,6 +17,7 @@ import com.farmacia.uth.data.entity.ResponseProveedores;
 import okhttp3.ResponseBody;
 
 import com.farmacia.uth.data.entity.ResponseMovimientos;
+import com.farmacia.uth.data.entity.ResponseProductos;
 
 public class RepositoryInventoryImpl {
 	private static RepositoryInventoryImpl instance;
@@ -104,6 +107,7 @@ public class RepositoryInventoryImpl {
 	}
 	//FIN IMPLEMENTACION METODOS FARMACIA
 	
+	//INICIO IMPLEMENTACION METODO MEDICAMENTOS
 	public ResponseMedicamentos getMedicamentos() throws IOException {
 		Call<ResponseMedicamentos> call = client.getDataBaseInventory().obtenerMedicamentos();
 		Response<ResponseMedicamentos> response = call.execute();
@@ -119,8 +123,9 @@ public class RepositoryInventoryImpl {
 		Response<ResponseBody> response = call.execute(); 		
 		return response.isSuccessful();
 	}
-
+	//FIN IMPLEMENTACION METODO MEDICAMENTOS
 	
+	//INICIO IMPLEMENTACION METODO MOVIMIENTOS
 	public ResponseMovimientos getMovimientos() throws IOException {
 		Call<ResponseMovimientos> call = client.getDataBaseInventory().obtenerMovimientos();
 		Response<ResponseMovimientos> response = call.execute();
@@ -130,5 +135,29 @@ public class RepositoryInventoryImpl {
 			return null;
 		}
 	}
+	
+	public boolean insertMovimiento(Movimiento nuevo) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().createMovimiento(nuevo);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	//FIN IMPLEMENTACION METODO MOVIMIENTOS
+	
+	//INICIO IMPLEMENTACION METODO PRODUCTOS
+	public ResponseProductos getProductos() throws IOException{
+		Call<ResponseProductos> call = client.getDataBaseInventory().obtenerProductos();
+		Response<ResponseProductos> response = call.execute();
+		if(response.isSuccessful()) {
+			return response.body();
+		}else {
+			return null;
+		}
+	}
+	public boolean insertProducto(Productos producto) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().crearProducto(producto);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	//FIN IMPLEMENTACION METODO MEDICAMENTOS
 	
 }

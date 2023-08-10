@@ -1,4 +1,4 @@
-package com.farmacia.uth.views.productos;
+package com.farmacia.uth.views.inventario;
 
 import com.farmacia.uth.data.controller.InventoryInteractor;
 import com.farmacia.uth.data.controller.InventoryInteractorImpl;
@@ -11,7 +11,6 @@ import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -42,14 +41,14 @@ public class InventarioView extends Div implements InventarioViewModel {
     
     private InventoryInteractor controlador;
     public InventarioView() {
-        addClassName("productos-view");
+        addClassName("inventario-view");
         setSizeFull();
         this.controlador = new InventoryInteractorImpl(this);
+        this.controlador.consultarInventario();
         grid.setHeight("100%");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER, GridVariant.LUMO_NO_ROW_BORDERS);
         grid.addComponentColumn(producto -> createCard(producto));
         add(createBody(), grid);
-        this.controlador.consultarInventario();
     }
 
     private Div createBody(){

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import com.farmacia.uth.data.entity.ResponseInventory;
 import com.farmacia.uth.data.service.RepositoryInventoryImpl;
-import com.farmacia.uth.views.productos.InventarioViewModel;
+import com.farmacia.uth.views.inventario.InventarioViewModel;
 
 public class InventoryInteractorImpl implements InventoryInteractor {
 	private RepositoryInventoryImpl modelo;
