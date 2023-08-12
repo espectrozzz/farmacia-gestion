@@ -7,8 +7,9 @@ public class Productos {
 	int id_med;
 	String nombre_med;
 	int id_farm;
+	String nombre_farm;
 	double precio_venta;
-	int stock_ini;
+	double stock_ini;
 	String usuario;
 	Date fecha_creacion;
 	
@@ -36,16 +37,22 @@ public class Productos {
 	public void setId_farm(int id_farm) {
 		this.id_farm = id_farm;
 	}
+	public String getNombre_farm() {
+		return nombre_farm;
+	}
+	public void setNombre_farm(String nombre_farm) {
+		this.nombre_farm = nombre_farm;
+	}
 	public double getPrecio_venta() {
 		return precio_venta;
 	}
 	public void setPrecio_venta(double precio_venta) {
 		this.precio_venta = precio_venta;
 	}
-	public int getStock_ini() {
+	public double getStock_ini() {
 		return stock_ini;
 	}
-	public void setStock_ini(int stock_ini) {
+	public void setStock_ini(double stock_ini) {
 		this.stock_ini = stock_ini;
 	}
 	
