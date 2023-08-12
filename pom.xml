@@ -129,6 +129,11 @@
     		<version>5.10.0-M1</version>
     		<scope>test</scope>
 		</dependency>
+		<dependency>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports</artifactId>
+            <version>6.17.0</version>
+        </dependency>
     </dependencies>
 
     <build>

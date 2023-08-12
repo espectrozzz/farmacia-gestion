@@ -55,4 +55,26 @@ public class ProductosInteractorImpl implements ProductosInteractor {
 		}
 	}
 
+	@Override
+	public void actualizarProducto(Productos producto) {
+		try {
+			boolean response = this.modelo.updateProducto(producto);
+			this.vista.showMsgUpdate(response);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+	@Override
+	public void eliminarProducto(int id) {
+		try {
+			boolean response = this.modelo.deleteProducto(id);
+			this.vista.showMsgDelete(response);
+		}catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 }

@@ -158,5 +158,20 @@ public interface RepositoryInventory {
 	})
 	@POST("pls/apex/mtech_paii_20232/gestionalmacenes/productos")
 	Call<ResponseBody> crearProducto(@Body Productos producto);
+	
+	@Headers({
+		"Content-Type: application/json",
+		"Accept-Charset: utf-8",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@PUT("pls/apex/mtech_paii_20232/gestionalmacenes/productos")
+	Call<ResponseBody> updateProducto(@Body Productos producto);
+	
+	@Headers({
+		"Accept-Charset: utf-8",
+		"User-Agent: Retrofit-Sample-App"
+	})
+	@DELETE("pls/apex/mtech_paii_20232/gestionalmacenes/productos")
+	Call<ResponseBody> deleteProducto(@Query("id_prod") int id);
 	//FIN PRODUCTOS
 }

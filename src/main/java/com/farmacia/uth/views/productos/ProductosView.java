@@ -1,6 +1,8 @@
 package com.farmacia.uth.views.productos;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -143,7 +145,8 @@ public class ProductosView extends Div implements ProductosViewInterface{
         		dialog.setConfirmText("Borrar");
         		dialog.setConfirmButtonTheme("error primary");
         		dialog.addConfirmListener(event -> {
-
+        			this.controlador.eliminarProducto(producto.getId_prod());
+        			this.controlador.consultarProductos();
         		});
         		dialog.open();
         		});
@@ -151,9 +154,28 @@ public class ProductosView extends Div implements ProductosViewInterface{
         })).setHeader("Manage");
         grid.asSingleSelect().addValueChangeListener(event ->{
         	if(event.getValue() != null) {
+        		Medicamento med = new Medicamento();
+        		med.setId_med(event.getValue().getId_med());
+        		med.setNombre_med(event.getValue().getNombre_med());
+        		this.cboMedicamento.setValue(med);
+        		Farmacia farm = new Farmacia();
+        		farm.setId_far(event.getValue().getId_farm());
+        		farm.setNombre_farm(event.getValue().getNombre_farm());
+        		this.cboFarmacia.setValue(farm);
+        		//this.cboMedicamento.setValue(event.getValue().getNombre_med());
+        		this.cboMedicamento.setId(event.getValue().getId_med()+"");
+        		this.precio.setValue(event.getValue().getPrecio_venta());
+        		this.stock.setValue(event.getValue().getStock_ini());
+        		this.usuario.setValue(event.getValue().getUsuario());
+        		DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+        	    String fecha = formatDate.format(event.getValue().getFecha_creacion());
+        	    LocalDate fechaRegistro = LocalDate.parse(fecha);
+        		this.creado.setValue(fechaRegistro);
+        		
         		populateForm(event.getValue());
         	}else {
         		populateForm(null);
+        		clearForm();
         	}
         });
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
@@ -181,7 +203,9 @@ public class ProductosView extends Div implements ProductosViewInterface{
     		this.producto.setPrecio_venta(this.precio.getValue());
     		this.producto.setStock_ini(this.stock.getValue().intValue());
     		this.producto.setUsuario(this.usuario.getValue());
-    		//this.controlador.updateProducto(producto);
+    		this.controlador.actualizarProducto(this.producto);
+    		this.controlador.consultarProductos();
+    		clearForm();
     	}
     }
 
@@ -214,10 +238,20 @@ public class ProductosView extends Div implements ProductosViewInterface{
 
 	@Override
 	public void showMsgUpdate(boolean value) {
+		String msg = "Producto actualizado correctamente.";
+		if(!value) {
+			msg = "Error al intentar actualizar producto";
+		}
+		Notification.show(msg);
 	}
 
 	@Override
 	public void showMsgDelete(boolean value) {
+		String msg = "Producto eliminado correctamente.";
+		if(!value) {
+			msg = "Error al intentar eliminar producto";
+		}
+		Notification.show(msg);
 	}
 	
 	@Override

@@ -158,6 +158,18 @@ public class RepositoryInventoryImpl {
 		Response<ResponseBody> response = call.execute();
 		return response.isSuccessful();
 	}
+	
+	public boolean updateProducto(Productos producto) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().updateProducto(producto);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
+	
+	public boolean deleteProducto(int id) throws IOException{
+		Call<ResponseBody> call = client.getDataBaseInventory().deleteProducto(id);
+		Response<ResponseBody> response = call.execute();
+		return response.isSuccessful();
+	}
 	//FIN IMPLEMENTACION METODO MEDICAMENTOS
 	
 }
