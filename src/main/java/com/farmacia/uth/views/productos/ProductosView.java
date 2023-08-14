@@ -59,6 +59,7 @@ public class ProductosView extends Div implements ProductosViewInterface{
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
+    private final Button report = new Button("Generar Reporte");
 
     private ProductosInteractor controlador;
     
@@ -180,10 +181,14 @@ public class ProductosView extends Div implements ProductosViewInterface{
         });
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         grid.setItems(productos);
+        HorizontalLayout layoutActions = new HorizontalLayout();
+        layoutActions.addClassName("button-layout");
+        report.addThemeVariants(ButtonVariant.LUMO_ICON);
+        layoutActions.add(report);
         // when a row is selected or deselected, populate form
 
         splitLayout.addToPrimary(wrapper);
-        wrapper.add(grid);
+        wrapper.add(grid, layoutActions);
     }
 
     private void createUpdateProduct() throws IOException {

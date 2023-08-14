@@ -58,6 +58,7 @@ public class InventarioView extends Div implements InventarioViewModel {
     private ComboBox<Medicamento> cboMedicamentos = new ComboBox<>("Medicamentos");
     private List<Medicamento> medicamentos;
     private RadioButtonGroup<String> parametersReports = new RadioButtonGroup<>();
+    private List<Inventario> dataInventory =  new ArrayList<>();
     
     private InventoryInteractor controlador;
     public InventarioView() {
@@ -84,7 +85,7 @@ public class InventarioView extends Div implements InventarioViewModel {
     	parametersReports.addThemeVariants(RadioGroupVariant.LUMO_HELPER_ABOVE_FIELD);
     	parametersReports.setLabel("Filtros");
     	parametersReports.setHelperText("Seleccione una de las opciones para parametrizar los reportes:");
-    	parametersReports.setItems("Farmacia","Medicamento","Existencia", "None");
+    	parametersReports.setItems("Farmacia","Medicamento", "None");
     	parametersReports.setValue("None");
     	filtersRadioButton.add(parametersReports);
     	HorizontalLayout buttonLayout = new HorizontalLayout();
@@ -107,14 +108,26 @@ public class InventarioView extends Div implements InventarioViewModel {
     	if("Farmacia".equalsIgnoreCase(filter)) {
         	parametros.put("TIPO_REPORT", "img/icon-hospital.png");
         	parametros.put("DESCRIPCION_REPORT", "Reporte de inventario por farmacia: "+ cboFarmacia.getValue().getNombre_farm());
+        	for(int i=0; i<this.inventario.size(); i++) {
+        		if(this.inventario.get(i).getNombre_farmacia().equalsIgnoreCase(cboFarmacia.getValue().getNombre_farm())) {
+        			this.dataInventory.add(this.inventario.get(i));
+        		}
+        	}
     	}else if("Medicamento".equalsIgnoreCase(filter)) {
         	parametros.put("TIPO_REPORT", "img/icon-medicamentos.png");
         	parametros.put("DESCRIPCION_REPORT", "Reporte de inventario por medicamento: "+ cboMedicamentos.getValue().getNombre_med());
+        	for(int i=0; i<this.inventario.size(); i++) {
+        		if(this.inventario.get(i).getNombre_medicamento().equalsIgnoreCase(cboMedicamentos.getValue().getNombre_med())) {
+        			this.dataInventory.add(this.inventario.get(i));
+        		}
+        	}
     	}else if("None".equalsIgnoreCase(filter)){
         	parametros.put("TIPO_REPORT", "img/icon-all-registers.png");
         	parametros.put("DESCRIPCION_REPORT", "Reporte de inventario");
+        	this.dataInventory.addAll(this.inventario);
     	}
-    	datasourse.setData(this.inventario);
+
+    	datasourse.setData(this.dataInventory);
 		boolean generado = generador.reportGeneratorPDF("inventory-report", parametros, datasourse);
 		if(generado) {
 			String ubicacion = generador.getRute();
@@ -130,6 +143,7 @@ public class InventarioView extends Div implements InventarioViewModel {
 			notificacion.setDuration(10000);
 			notificacion.open();
 		}
+		this.dataInventory.clear();
     }
     
     private HorizontalLayout createCard(Inventario producto) {

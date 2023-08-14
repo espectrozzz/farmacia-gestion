@@ -118,8 +118,10 @@ public class MovimientosView extends Div implements MovimientosViewModel{
         	createMovimiento();
         });
         searchBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-
-        Div actions = new Div(resetBtn, searchBtn);
+        Button reportBtn = new Button("Generar Reporte");
+        reportBtn.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
+        
+        Div actions = new Div(resetBtn, searchBtn, reportBtn);
         actions.addClassName(LumoUtility.Gap.SMALL);
         actions.addClassName("actions");
 

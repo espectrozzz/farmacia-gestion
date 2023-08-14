@@ -58,6 +58,7 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
 
     private Button cancel = new Button("Cancelar");
     private Button save = new Button("Guardar");
+    private Button report = new Button("Generar Reporte");
     
     private List<Proveedor> proveedores;
     private Medicamento medicamento;
@@ -149,8 +150,10 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.addClassName("button-layout");
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        report.addThemeVariants(ButtonVariant.LUMO_ICON);
         buttonLayout.add(save);
         buttonLayout.add(cancel);
+        buttonLayout.add(report);
         return buttonLayout;
     }
 

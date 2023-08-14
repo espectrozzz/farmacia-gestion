@@ -20,6 +20,10 @@
   grid-column-end: span 2;
 }
 
+.movimientos-view vaadin-button{
+	margin-right: 15px;
+}
+
 .movimientos-view .filter-layout .actions {
   display: flex;
   justify-content: flex-end;
