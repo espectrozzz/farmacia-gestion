@@ -58,7 +58,8 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
-
+    private final Button report = new Button("Generar Reporte");
+    
     private Farmacia farmacia;
     private FarmaciaInteractor controlador;
 
@@ -203,8 +204,12 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
         grid.asSingleSelect().addValueChangeListener(event -> {
         	selectedDataGrid(event.getValue());
         });
+        HorizontalLayout layoutActions = new HorizontalLayout();
+        layoutActions.addClassName("button-layout");
+        report.addThemeVariants(ButtonVariant.LUMO_ICON);
+        layoutActions.add(report);
         splitLayout.addToPrimary(wrapper);
-        wrapper.add(grid);
+        wrapper.add(grid, layoutActions);
     }
 
     private void refreshGrid() {

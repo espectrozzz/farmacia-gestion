@@ -58,6 +58,7 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
 
     private final Button cancel = new Button("Cancelar");
     private final Button save = new Button("Guardar");
+    private final Button report = new Button("Generar Reporte");
 
     private Proveedor proveedor;
     private ProveedorInteractor controlador;
@@ -83,50 +84,7 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
         });
     }
 
-    private void createProveedor() {
-    	if(this.proveedor == null) {
-    		this.proveedor = new Proveedor();
-    		this.proveedor.setNombre_prov(nombre.getValue());
-    		this.proveedor.setDireccion_pro(direccion.getValue());
-    		this.proveedor.setTelefono(telefono.getValue());
-    		this.proveedor.setCorreo_prov(correo.getValue());
-    		this.proveedor.setUsuario(usuario.getValue());
-    		this.controlador.crearProveedor(proveedor);
-    		clearForm();
-    		refreshGrid();
-    	}else {
-    		this.proveedor.setNombre_prov(nombre.getValue());
-    		this.proveedor.setDireccion_pro(direccion.getValue());
-    		this.proveedor.setTelefono(telefono.getValue());
-    		this.proveedor.setCorreo_prov(correo.getValue());
-    		this.controlador.actualizarProveedor(proveedor);
-    		clearForm();
-            refreshGrid();
-    	}
-    }
-    
-    private void selectedDataGrid(Proveedor proveedor) {
-    	if(proveedor != null) {
-    		nombre.setValue(proveedor.getNombre_prov()+"");
-    	    direccion.setValue(proveedor.getDireccion_pro()+"");
-    	    telefono.setValue(proveedor.getTelefono()+"");
-    	    correo.setValue(proveedor.getCorreo_prov()+"");
-    	    DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
-    	    String fecha = formatDate.format(proveedor.getFecha_creacion());
-    	    LocalDate fechaRegistro = LocalDate.parse(fecha);
-    	    usuario.setValue(proveedor.getUsuario()+"");
-    	    creado.setValue(fechaRegistro);
-    	    populateForm(proveedor);
-    	}else {
-    		nombre.setValue("");
-    	    direccion.setValue("");
-    	    telefono.setValue("");
-    	    correo.setValue("");
-    	    usuario.setValue("");
-    	    creado.setValue(LocalDate.now());
-    	}
-	}
-
+ 
 	@Override
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> proveedorId = event.getRouteParameters().get(PROVEEDOR_ID).map(Long::parseLong);
@@ -201,14 +159,63 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
         })).setHeader("Manage");
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
         
+        HorizontalLayout layoutActions = new HorizontalLayout();
+        report.addThemeVariants(ButtonVariant.LUMO_ICON);
+        layoutActions.addClassName("button-layout");
+        layoutActions.add(report);
         // when a row is selected or deselected, populate form
         grid.asSingleSelect().addValueChangeListener(event -> {
            selectedDataGrid(event.getValue());
         });
+        wrapper.add(grid, layoutActions);
         splitLayout.addToPrimary(wrapper);
-        wrapper.add(grid);
     }
 
+    private void createProveedor() {
+    	if(this.proveedor == null) {
+    		this.proveedor = new Proveedor();
+    		this.proveedor.setNombre_prov(nombre.getValue());
+    		this.proveedor.setDireccion_pro(direccion.getValue());
+    		this.proveedor.setTelefono(telefono.getValue());
+    		this.proveedor.setCorreo_prov(correo.getValue());
+    		this.proveedor.setUsuario(usuario.getValue());
+    		this.controlador.crearProveedor(proveedor);
+    		clearForm();
+    		refreshGrid();
+    	}else {
+    		this.proveedor.setNombre_prov(nombre.getValue());
+    		this.proveedor.setDireccion_pro(direccion.getValue());
+    		this.proveedor.setTelefono(telefono.getValue());
+    		this.proveedor.setCorreo_prov(correo.getValue());
+    		this.controlador.actualizarProveedor(proveedor);
+    		clearForm();
+            refreshGrid();
+    	}
+    }
+    
+    private void selectedDataGrid(Proveedor proveedor) {
+    	if(proveedor != null) {
+    		nombre.setValue(proveedor.getNombre_prov()+"");
+    	    direccion.setValue(proveedor.getDireccion_pro()+"");
+    	    telefono.setValue(proveedor.getTelefono()+"");
+    	    correo.setValue(proveedor.getCorreo_prov()+"");
+    	    DateFormat formatDate = new SimpleDateFormat("yyyy-MM-dd");
+    	    String fecha = formatDate.format(proveedor.getFecha_creacion());
+    	    LocalDate fechaRegistro = LocalDate.parse(fecha);
+    	    usuario.setValue(proveedor.getUsuario()+"");
+    	    creado.setValue(fechaRegistro);
+    	    populateForm(proveedor);
+    	}else {
+    		nombre.setValue("");
+    	    direccion.setValue("");
+    	    telefono.setValue("");
+    	    correo.setValue("");
+    	    usuario.setValue("");
+    	    creado.setValue(LocalDate.now());
+    	}
+	}
+
+    
     private void refreshGrid() {
         grid.select(null);
         grid.getDataProvider().refreshAll();
@@ -265,14 +272,4 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
 		}
 		Notification.show(msg);
 	}
-
-/*	@Override
-	public void showMessageCreate(boolean value) {
-		String msg = "Empleado creado con exito";
-		if(!value) {
-			msg = "Error al crear empleado";	
-		}
-		Notification.show(msg);
-	}
-	*/
 }

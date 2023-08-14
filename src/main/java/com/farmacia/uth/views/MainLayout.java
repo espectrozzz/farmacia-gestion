@@ -58,9 +58,9 @@ public class MainLayout extends AppLayout {
         nav.addItem(new SideNavItem("Proveedores", ProveedoresView.class, LineAwesomeIcon.TRUCK_SOLID.create()));
         nav.addItem(new SideNavItem("Medicamentos", MedicamentosView.class, LineAwesomeIcon.TABLETS_SOLID.create()));
         nav.addItem(new SideNavItem("Farmacias", FarmaciasView.class, LineAwesomeIcon.HOSPITAL_SOLID.create()));
-        nav.addItem(new SideNavItem("Inventario", InventarioView.class, LineAwesomeIcon.LIST_SOLID.create()));
-        nav.addItem(new SideNavItem("Movimientos", MovimientosView.class, LineAwesomeIcon.BOX_SOLID.create()));
         nav.addItem(new SideNavItem("Productos", ProductosView.class, LineAwesomeIcon.BOX_SOLID.create()));
+        nav.addItem(new SideNavItem("Movimientos", MovimientosView.class, LineAwesomeIcon.BOX_SOLID.create()));
+        nav.addItem(new SideNavItem("Inventario", InventarioView.class, LineAwesomeIcon.LIST_SOLID.create()));
         return nav;
     }
 
