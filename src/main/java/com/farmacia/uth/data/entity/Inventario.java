@@ -1,5 +1,7 @@
 	package com.farmacia.uth.data.entity;
 
+import java.util.Date;
+
 public class Inventario {
 
 	private int id_prod;
@@ -58,7 +60,7 @@ public class Inventario {
 	}
 	public int getIngresos() {
 		return ingresos;
-	}
+	} 
 	public void setIngresos(int ingresos) {
 		this.ingresos = ingresos;
 	}

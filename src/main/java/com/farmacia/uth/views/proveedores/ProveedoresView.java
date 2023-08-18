@@ -2,7 +2,10 @@ package com.farmacia.uth.views.proveedores;
 
 import com.farmacia.uth.data.controller.ProveedorInteractor;
 import com.farmacia.uth.data.controller.ProveedorInteractorImpl;
+import com.farmacia.uth.data.entity.ProductosDataReport;
 import com.farmacia.uth.data.entity.Proveedor;
+import com.farmacia.uth.data.entity.ProveedoresDataReport;
+import com.farmacia.uth.data.service.ReportGenerator;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -11,11 +14,13 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -33,9 +38,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 
 @PageTitle("Proveedores")
@@ -82,9 +89,40 @@ public class ProveedoresView extends Div implements BeforeEnterObserver, Proveed
         save.addClickListener(e -> {
         	createProveedor();
         });
+        report.addClickListener(e -> {
+        	generarReporte();
+        });
     }
 
  
+	private void generarReporte() {
+		ReportGenerator generador = new ReportGenerator();
+    	Map<String, Object> parametros = new HashMap<>();
+    	
+    	parametros.put("LOGO_DIR", "img/icons-proveedor.png");
+    	
+    	ProveedoresDataReport datasourse = new ProveedoresDataReport();
+    	datasourse.setData(this.proveedores);
+		boolean generado = generador.reportGeneratorPDF("proveedores-report", parametros, datasourse);
+		if(generado) {
+			String ubicacion = generador.getRute();
+			Anchor url = new Anchor(ubicacion, "Abrir reporte PDF");
+			url.setTarget("_blank");
+			Notification notificacion = new Notification(url);
+			notificacion.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+			notificacion.setDuration(20000);
+			notificacion.open();
+		}else {
+			Notification notificacion = new Notification("Error al generar reporte");
+			notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+			notificacion.setDuration(10000);
+			notificacion.open();
+		}
+		this.proveedores.clear();
+		
+	}
+
+
 	@Override
     public void beforeEnter(BeforeEnterEvent event) {
         Optional<Long> proveedorId = event.getRouteParameters().get(PROVEEDOR_ID).map(Long::parseLong);

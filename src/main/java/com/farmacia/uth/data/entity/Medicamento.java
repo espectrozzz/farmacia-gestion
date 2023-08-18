@@ -7,7 +7,7 @@ public class Medicamento {
 	private String nombre_med;
 	private String descripcion_med;
 	private String usuario;
-	private Date fecha_creacion;
+	private String fecha_creacion;
 	private Date fecha_vencimiento;
 	private int id_prov;
 	
@@ -36,10 +36,10 @@ public class Medicamento {
 		this.usuario = usuario;
 	}
 
-	public Date getFecha_creacion() {
+	public String getFecha_creacion() {
 		return fecha_creacion;
 	}
-	public void setFecha_creacion(Date fecha_creacion) {
+	public void setFecha_creacion(String fecha_creacion) {
 		this.fecha_creacion = fecha_creacion;
 	}
 	public Date getFecha_vencimiento() {
@@ -48,6 +48,7 @@ public class Medicamento {
 	public void setFecha_vencimiento(Date fecha_vencimiento) {
 		this.fecha_vencimiento = fecha_vencimiento;
 	}
+	
 	public int getId_prov() {
 		return id_prov;
 	}
