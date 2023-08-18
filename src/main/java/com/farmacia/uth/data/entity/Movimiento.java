@@ -1,14 +1,16 @@
 package com.farmacia.uth.data.entity;
 
+import java.util.Date;
 
 public class Movimiento{
 
 	private int id_mov;
 	private String tipo_mov;
 	private int cantidad;
-	private String fecha_mov;
+	private Date fecha_mov;
 	private String usuario;
 	private int id_prod;
+	
 	public int getId_mov() {
 		return id_mov;
 	}
@@ -27,10 +29,10 @@ public class Movimiento{
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	public String getFecha_mov() {
+	public Date getFecha_mov() {
 		return fecha_mov;
 	}
-	public void setFecha_mov(String fecha_mov) {
+	public void setFecha_mov(Date fecha_mov) {
 		this.fecha_mov = fecha_mov;
 	}
 	public String getUsuario() {

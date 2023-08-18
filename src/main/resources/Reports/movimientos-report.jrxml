@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.20.5.final using JasperReports Library version 6.20.5-3efcf2e67f959db3888d79f73dde2dbd7acb4f8e  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimientos-report" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d4a1d5eb-82dd-412f-a620-202e4bdf9dba">
+	<property name="template.engine" value="tabular_template"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<style name="Table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+			<topPen lineWidth="1.0" lineColor="#000000"/>
+			<leftPen lineWidth="1.0" lineColor="#000000"/>
+			<bottomPen lineWidth="1.0" lineColor="#000000"/>
+			<rightPen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<subDataset name="tableDataset" uuid="de729d4c-15fe-4b0f-838b-076cc56c3d51">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+	</subDataset>
+	<parameter name="LOGO_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="ID" class="java.lang.Integer"/>
+	<field name="TIPO_MOVIMIENTO" class="java.lang.String"/>
+	<field name="CANTIDAD" class="java.lang.Integer"/>
+	<field name="USUARIO" class="java.lang.String"/>
+	<field name="ID_PRODUCTO" class="java.lang.Integer"/>
+	<field name="FECHA" class="java.util.Date"/>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#76B394" uuid="6321f5e3-86eb-444f-acc1-8daaaa0d6c60"/>
+				<staticText>
+					<reportElement x="19" y="5" width="470" height="43" forecolor="#FFFFFF" uuid="4992a56a-d037-4d6a-bdd1-379fe603f10e">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.tabStopWidth" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="30" isBold="true" isItalic="false" isUnderline="true"/>
+						<paragraph lineSpacing="Proportional" tabStopWidth="20"/>
+					</textElement>
+					<text><![CDATA[REPORTE DE MOVIMIENTOS]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="19" y="45" width="260" height="20" uuid="0542748e-add2-4f45-bf7f-3402e7abbf7e"/>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="12"/>
+					</textElement>
+					<text><![CDATA[SISTEMA DE GESTION DE FARMACIAS]]></text>
+				</staticText>
+				<textField pattern="EEEEE dd MMMMM yyyy h:mm a">
+					<reportElement x="19" y="66" width="100" height="20" uuid="5ebb1399-ff53-4d3a-b62a-d22c91b2e02e"/>
+					<textElement>
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+				</textField>
+				<image>
+					<reportElement x="513" y="13" width="60" height="60" uuid="def60c68-01e5-4653-b434-82e716993f6e">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<imageExpression><![CDATA[$P{LOGO_DIR}]]></imageExpression>
+				</image>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="13"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="44">
+			<rectangle>
+				<reportElement x="0" y="5" width="555" height="35" backcolor="#83FFC2" uuid="72249834-888e-4480-a8e9-8ecdaaceba38"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="0" y="5" width="40" height="34" uuid="7cd3f1ba-f45b-4ed1-afbe-4ed964ff1249"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="5" width="120" height="34" uuid="8c56eda2-d527-4ac2-b58c-952cd874a8f6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[TIPO DE MOVIMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="160" y="6" width="110" height="34" uuid="7ba3f003-ab1b-4c48-bcda-2cfb91e09440"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[CANTIDAD]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="5" width="120" height="34" uuid="4fb1891a-1028-4fcf-8b42-2308f29a2ffc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[FECHA DE MOVIMIENTO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="390" y="5" width="90" height="34" uuid="a41231c6-6fa3-40fe-b70a-198e38c8fbaf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[USUARIO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="5" width="75" height="34" uuid="e02f471e-e385-4102-9b1e-8fe21f35f030"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[ID DEL PRODUCTO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="16">
+			<textField>
+				<reportElement x="-1" y="-2" width="41" height="18" uuid="a41da168-9f82-4571-93cf-d4d0fa40bd9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="40" y="-2" width="120" height="18" uuid="3154ee57-c7b4-4dbd-9f52-09c880f1fef4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TIPO_MOVIMIENTO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="160" y="-2" width="110" height="18" uuid="ae10f8a9-cab5-4fb2-b50b-3ecfe2b32aa6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CANTIDAD}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="-2" width="120" height="18" uuid="fbc73556-4708-40d3-95b9-31df137c1a1e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FECHA}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="390" y="-2" width="90" height="18" uuid="1a198d05-f3c7-495e-8d90-14abe3fde3ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{USUARIO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="-2" width="74" height="18" uuid="cdb6159a-eddf-4f12-922f-f3ff0c3aa13c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ID_PRODUCTO}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="fed27553-a6c4-4a8a-9056-2f6f2589a3e5"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="9f5ad531-d413-49c9-874b-8b99e8150fa6"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

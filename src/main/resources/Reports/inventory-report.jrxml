@@ -32,20 +32,34 @@
 		<band height="72">
 			<frame>
 				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#76B394" uuid="6321f5e3-86eb-444f-acc1-8daaaa0d6c60"/>
-				<staticText>
-					<reportElement x="100" y="13" width="430" height="43" forecolor="#FFFFFF" uuid="9e48917a-7b59-4ffd-baad-725f45563194"/>
-					<textElement>
-						<font fontName="Bahnschrift" size="34" isBold="true"/>
-					</textElement>
-					<text><![CDATA[Reporte de Inventario]]></text>
-				</staticText>
-				<image>
-					<reportElement x="30" y="13" width="68" height="63" uuid="5292d054-8473-4b1f-ae74-20520b73208c"/>
+				<image scaleImage="RetainShape">
+					<reportElement x="513" y="12" width="60" height="60" uuid="5292d054-8473-4b1f-ae74-20520b73208c">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
 					<imageExpression><![CDATA[$P{TIPO_REPORT}]]></imageExpression>
 				</image>
 				<textField>
-					<reportElement x="100" y="56" width="360" height="20" forecolor="#FFFFFF" uuid="c81e3fd0-dc1f-47ce-a52b-75d4a2855e03"/>
+					<reportElement x="21" y="50" width="360" height="20" forecolor="#030000" uuid="c81e3fd0-dc1f-47ce-a52b-75d4a2855e03"/>
 					<textFieldExpression><![CDATA[$P{DESCRIPCION_REPORT}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="21" y="4" width="470" height="43" forecolor="#FFFFFF" uuid="40ced0b0-466f-4000-9bc6-40788446f39b">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.tabStopWidth" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Left" verticalAlignment="Middle">
+						<font fontName="Arial" size="30" isBold="true" isItalic="false" isUnderline="true"/>
+						<paragraph lineSpacing="Proportional" tabStopWidth="20"/>
+					</textElement>
+					<text><![CDATA[REPORTE DE INVENTARIO]]></text>
+				</staticText>
+				<textField pattern="EEEEE dd MMMMM yyyy h:mm a">
+					<reportElement x="20" y="67" width="100" height="20" uuid="eb30004c-3306-427c-b847-63e91d9026ca"/>
+					<textElement>
+						<font fontName="Arial"/>
+					</textElement>
+					<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 				</textField>
 			</frame>
 		</band>
@@ -91,34 +105,35 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="50">
+		<band height="16">
 			<textField>
-				<reportElement x="-1" y="0" width="59" height="18" uuid="a41da168-9f82-4571-93cf-d4d0fa40bd9f"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="-1" y="-3" width="59" height="18" uuid="a41da168-9f82-4571-93cf-d4d0fa40bd9f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{ID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="58" y="0" width="122" height="18" uuid="3154ee57-c7b4-4dbd-9f52-09c880f1fef4"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="58" y="-3" width="122" height="18" uuid="3154ee57-c7b4-4dbd-9f52-09c880f1fef4"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{MEDICAMENTO_NOMBRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="180" y="0" width="110" height="18" uuid="ae10f8a9-cab5-4fb2-b50b-3ecfe2b32aa6"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="180" y="-3" width="110" height="18" uuid="ae10f8a9-cab5-4fb2-b50b-3ecfe2b32aa6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FARMACIA_NOMBRE}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="290" y="0" width="100" height="18" uuid="fbc73556-4708-40d3-95b9-31df137c1a1e"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="290" y="-3" width="100" height="18" uuid="fbc73556-4708-40d3-95b9-31df137c1a1e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{PRECIO}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="390" y="0" width="90" height="18" uuid="1a198d05-f3c7-495e-8d90-14abe3fde3ba"/>
-				<textElement textAlignment="Center"/>
+				<reportElement x="390" y="-3" width="90" height="18" uuid="1a198d05-f3c7-495e-8d90-14abe3fde3ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{EXISTENCIAS}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="480" y="0" width="74" height="18" uuid="cdb6159a-eddf-4f12-922f-f3ff0c3aa13c"/>
+				<reportElement x="480" y="-3" width="74" height="18" uuid="cdb6159a-eddf-4f12-922f-f3ff0c3aa13c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression><![CDATA[$F{FECHA}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -133,10 +148,6 @@
 			<textField evaluationTime="Report">
 				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="9f5ad531-d413-49c9-874b-8b99e8150fa6"/>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="0" y="4" width="100" height="13" uuid="fc593335-5cbf-4caf-97b3-ff897c676bde"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

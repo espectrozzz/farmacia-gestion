@@ -10,7 +10,10 @@ import com.farmacia.uth.data.controller.ProveedorInteractorImpl;
 import com.farmacia.uth.data.controller.MedicamentoInteractor;
 import com.farmacia.uth.data.controller.MedicamentoInteractorImpl;
 import com.farmacia.uth.data.entity.Medicamento;
+import com.farmacia.uth.data.entity.MedicamentosDataReport;
+import com.farmacia.uth.data.entity.ProductosDataReport;
 import com.farmacia.uth.data.entity.Proveedor;
+import com.farmacia.uth.data.service.ReportGenerator;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -20,6 +23,7 @@ import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.grid.Grid;
@@ -27,6 +31,7 @@ import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -37,9 +42,11 @@ import com.vaadin.flow.theme.lumo.LumoIcon;
 import com.farmacia.uth.views.proveedores.ProveedorViewModel;
 
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
 
 @PageTitle("Medicamentos")
 @Route(value = "medicamentos", layout = MainLayout.class)
@@ -80,12 +87,40 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
         add(splitLayout);
 
         cancel.addClickListener(e -> clearForm());
+        report.addClickListener(e -> generarReporte());
         save.addClickListener(e -> {
             crearMedicamento();
+            clearForm();
         });
     }
 
-    private void createGridLayout(SplitLayout splitLayout) {
+    private void generarReporte() {
+    	ReportGenerator generador = new ReportGenerator();
+    	Map<String, Object> parametros = new HashMap<>();
+    	
+    	parametros.put("LOGO_DIR", "img/icons-medicamento.png");
+    	
+    	MedicamentosDataReport datasourse = new MedicamentosDataReport();
+    	datasourse.setData(this.medicamentos);
+		boolean generado = generador.reportGeneratorPDF("medicamentos-report", parametros, datasourse);
+		if(generado) {
+			String ubicacion = generador.getRute();
+			Anchor url = new Anchor(ubicacion, "Abrir reporte PDF");
+			url.setTarget("_blank");
+			Notification notificacion = new Notification(url);
+			notificacion.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+			notificacion.setDuration(20000);
+			notificacion.open();
+		}else {
+			Notification notificacion = new Notification("Error al generar reporte");
+			notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+			notificacion.setDuration(10000);
+			notificacion.open();
+		}
+		this.medicamentos.clear();
+	}
+
+	private void createGridLayout(SplitLayout splitLayout) {
     	Div gridContainer = new Div();
     	gridData.addColumn("id_med").setAutoWidth(true).setHeader("ID");
     	gridData.addColumn("nombre_med").setAutoWidth(true).setHeader("Medicamento");
@@ -208,9 +243,9 @@ public class MedicamentosView extends Div implements MedicamentosViewModel {
 
 	@Override
 	public void showMessageMed(boolean value) {
-		String mensaje = "Empleado Creado con Exito :D";
+		String mensaje = "Medicmaento Creado con Exito :D";
 		if(!value) {
-			mensaje = "Error al crear empleado >:c";
+			mensaje = "Error al crear medicamento >:c";
 		}
 		Notification.show(mensaje);
 	}

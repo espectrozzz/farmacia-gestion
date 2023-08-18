@@ -2,8 +2,11 @@ package com.farmacia.uth.views.movimientos;
 
 import com.farmacia.uth.data.controller.MovimientoInteractor;
 import com.farmacia.uth.data.controller.MovimientoInteractorImpl;
+import com.farmacia.uth.data.entity.FarmaciasDataReport;
 import com.farmacia.uth.data.entity.Movimiento;
+import com.farmacia.uth.data.entity.MovimientosDataReport;
 import com.farmacia.uth.data.entity.Productos;
+import com.farmacia.uth.data.service.ReportGenerator;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Text;
@@ -16,10 +19,12 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -37,7 +42,10 @@ import jakarta.persistence.criteria.Root;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.vaadin.lineawesome.LineAwesomeIcon;
@@ -105,20 +113,25 @@ public class MovimientosView extends Div implements MovimientosViewModel{
         resetBtn.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
         resetBtn.addClickListener(e -> {
             usuario.clear();
-            cantidad.clear();
-            startDate.clear();
+            cantidad.setValue(0.0);
+            cboProductos.clear();
             cboMovimiento.clear();
         });
         Button searchBtn = new Button("Guardar");
         searchBtn.addClickListener(event -> {
-            usuario.clear();
-            cantidad.clear();
-            startDate.clear();
-            cboMovimiento.clear();
         	createMovimiento();
+            usuario.clear();
+            cantidad.setValue(0.0);
+            cboProductos.clear();
+            cboMovimiento.clear();
         });
         searchBtn.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        
         Button reportBtn = new Button("Generar Reporte");
+        reportBtn.addClickListener(event -> {
+        	generarReporte();
+        });
+        
         reportBtn.addThemeVariants(ButtonVariant.MATERIAL_CONTAINED);
         
         Div actions = new Div(resetBtn, searchBtn, reportBtn);
@@ -129,7 +142,33 @@ public class MovimientosView extends Div implements MovimientosViewModel{
         return container;
     }
     
-    private Component createGrid() {
+    private void generarReporte() {
+    	ReportGenerator generador = new ReportGenerator();
+    	Map<String, Object> parametros = new HashMap<>();
+    	
+    	parametros.put("LOGO_DIR", "img/icons-movimiento.png");
+    	
+    	MovimientosDataReport datasourse = new MovimientosDataReport();
+    	datasourse.setData(this.movimientos);
+		boolean generado = generador.reportGeneratorPDF("movimientos-report", parametros, datasourse);
+		if(generado) {
+			String ubicacion = generador.getRute();
+			Anchor url = new Anchor(ubicacion, "Abrir reporte PDF");
+			url.setTarget("_blank");
+			Notification notificacion = new Notification(url);
+			notificacion.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+			notificacion.setDuration(20000);
+			notificacion.open();
+		}else {
+			Notification notificacion = new Notification("Error al generar reporte");
+			notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+			notificacion.setDuration(10000);
+			notificacion.open();
+		}
+		this.movimientos.clear();
+	}
+
+	private Component createGrid() {
         grid.addColumn("id_mov").setAutoWidth(true).setHeader("Id Movimiento");
         grid.addColumn("tipo_mov").setAutoWidth(true).setHeader("Tipo Movimiento");
         grid.addColumn("cantidad").setAutoWidth(true).setHeader("Cantidad");

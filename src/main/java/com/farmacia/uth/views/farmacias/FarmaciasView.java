@@ -3,6 +3,9 @@ package com.farmacia.uth.views.farmacias;
 import com.farmacia.uth.data.controller.FarmaciaInteractor;
 import com.farmacia.uth.data.controller.FarmaciaInteractorImpl;
 import com.farmacia.uth.data.entity.Farmacia;
+import com.farmacia.uth.data.entity.FarmaciasDataReport;
+import com.farmacia.uth.data.entity.InventoryDataReport;
+import com.farmacia.uth.data.service.ReportGenerator;
 import com.farmacia.uth.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
@@ -10,11 +13,13 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -30,7 +35,9 @@ import com.vaadin.flow.router.Route;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -80,9 +87,39 @@ public class FarmaciasView extends Div implements BeforeEnterObserver, Farmacias
         save.addClickListener(e -> {
         	createFarm();
         });
+        report.addClickListener(e -> {
+        	generarReporte();
+        });
     }
 
-    public void createFarm() {
+    private void generarReporte() {
+    	ReportGenerator generador = new ReportGenerator();
+    	Map<String, Object> parametros = new HashMap<>();
+    	
+    	parametros.put("LOGO_DIR", "img/icons-farmacia.png");
+    	
+    	FarmaciasDataReport datasourse = new FarmaciasDataReport();
+    	datasourse.setData(this.farmacias);
+		boolean generado = generador.reportGeneratorPDF("farmacias-report", parametros, datasourse);
+		if(generado) {
+			String ubicacion = generador.getRute();
+			Anchor url = new Anchor(ubicacion, "Abrir reporte PDF");
+			url.setTarget("_blank");
+			Notification notificacion = new Notification(url);
+			notificacion.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+			notificacion.setDuration(20000);
+			notificacion.open();
+		}else {
+			Notification notificacion = new Notification("Error al generar reporte");
+			notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+			notificacion.setDuration(10000);
+			notificacion.open();
+		}
+		this.farmacias.clear();
+		
+	}
+
+	public void createFarm() {
     	if(this.farmacia == null) {
     		this.farmacia = new Farmacia();
     		this.farmacia.setNombre_farm(nombre.getValue().toString());

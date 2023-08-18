@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.vaadin.lineawesome.LineAwesomeIcon;
 
@@ -12,8 +14,12 @@ import com.farmacia.uth.data.controller.ProductosInteractor;
 import com.farmacia.uth.data.controller.ProductosInteractorImpl;
 import com.farmacia.uth.data.entity.Farmacia;
 import com.farmacia.uth.data.entity.Medicamento;
+import com.farmacia.uth.data.entity.MovimientosDataReport;
 import com.farmacia.uth.data.entity.Productos;
+import com.farmacia.uth.data.entity.ProductosDataReport;
+import com.farmacia.uth.data.service.ReportGenerator;
 import com.farmacia.uth.views.MainLayout;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -28,6 +34,7 @@ import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -108,6 +115,11 @@ public class ProductosView extends Div implements ProductosViewInterface{
         cancel.addClickListener(event -> {
         	clearForm();
         });
+        
+        report.addClickListener(event -> {
+        	generarReporte();
+        });
+        
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         save.addClickListener(event -> {
         	try {
@@ -121,7 +133,33 @@ public class ProductosView extends Div implements ProductosViewInterface{
         editorLayoutDiv.add(buttonLayout);
     }
 
-    private void createGridLayout(SplitLayout splitLayout) {
+    private void generarReporte() {
+    	ReportGenerator generador = new ReportGenerator();
+    	Map<String, Object> parametros = new HashMap<>();
+    	
+    	parametros.put("LOGO_DIR", "img/icons-producto.png");
+    	
+    	ProductosDataReport datasourse = new ProductosDataReport();
+    	datasourse.setData(this.productos);
+		boolean generado = generador.reportGeneratorPDF("productos-report", parametros, datasourse);
+		if(generado) {
+			String ubicacion = generador.getRute();
+			Anchor url = new Anchor(ubicacion, "Abrir reporte PDF");
+			url.setTarget("_blank");
+			Notification notificacion = new Notification(url);
+			notificacion.addThemeVariants(NotificationVariant.LUMO_SUCCESS);
+			notificacion.setDuration(20000);
+			notificacion.open();
+		}else {
+			Notification notificacion = new Notification("Error al generar reporte");
+			notificacion.addThemeVariants(NotificationVariant.LUMO_ERROR);
+			notificacion.setDuration(10000);
+			notificacion.open();
+		}
+		this.productos.clear();
+		
+	}
+	private void createGridLayout(SplitLayout splitLayout) {
         Div wrapper = new Div();
         wrapper.setClassName("grid-wrapper");
         // Configure Grid
