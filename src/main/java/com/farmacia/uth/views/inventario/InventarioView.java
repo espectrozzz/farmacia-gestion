@@ -93,6 +93,11 @@ public class InventarioView extends Div implements InventarioViewModel {
     	search.addClickListener(event -> {
     		generarReporte();
     	});
+    	reset.addClickListener(event -> {
+    		this.cboFarmacia.clear();
+    		this.cboMedicamentos.clear();
+    		parametersReports.setValue("None");
+    	});
     	reset.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
     	buttonLayout.add(search, reset);
     	bodyLayout.add(formLayout, filtersRadioButton, buttonLayout);
